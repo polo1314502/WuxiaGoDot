@@ -7,6 +7,7 @@ var player_data: Dictionary
 var result_text: String = ""
 var triggers_battle: bool = false
 var battle_params: Dictionary = {}
+var choice_data = null  # 新增：存儲對應的 choice 對象
 
 func _init(main, params: Dictionary = {}):
 	main_scene = main

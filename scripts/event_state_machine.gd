@@ -43,7 +43,11 @@ func handle_choice(choice_index: int):
 			result_ready.emit(action.get_result())
 		else:
 			change_state(State.SHOWING_RESULT)
+			# 將 action 一起傳遞，讓主場景知道選擇的資訊
 			result_ready.emit(action.get_result())
+			# 發送額外信號傳遞 choice_data
+			if action.choice_data:
+				main_scene._handle_action_result(action)
 
 func complete_event():
 	event_manager.complete_event()

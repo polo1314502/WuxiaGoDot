@@ -136,11 +136,14 @@ func process_choice(choice_index: int):
 		if action.triggers_battle:
 			battle_triggered.emit(action.battle_params)
 		
+		# 將 choice 對象也返回，讓主場景知道是否要繼續事件
+		action.choice_data = choice
 		return action
 	else:
 		# 無法執行（如銀兩不足）
 		var fail_action = EventAction.new(main_scene, {})
 		fail_action.result_text = "你無法完成這個選擇..."
+		fail_action.choice_data = choice
 		return fail_action
 
 func complete_event():

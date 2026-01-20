@@ -21,4 +21,5 @@ action_params = {
 "speed": 0,
 "training_points": 0
 }
+end_event = true
 metadata/_custom_type_script = "uid://dkt0xii001h0n"
