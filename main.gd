@@ -272,7 +272,7 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
 		enemy_turn()
 		
 func _on_skill_used(skill_id: String):
-	if battle_turn != "player" or not in_battle or player_data.hp == 0:
+	if battle_turn != "player" or not in_battle or player_data.hp <= 0 or enemy_data.hp <= 0:
 		return
 	
 	var executor = skill_manager.execute_skill(skill_id)
@@ -285,7 +285,6 @@ func _on_skill_used(skill_id: String):
 	for log in executor.get_logs():
 		add_battle_log(log)
 	
-	check_battle_end()
 	if in_battle:
 		battle_turn = "enemy"
 		update_battle_display()
