@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=3 format=3 uid="uid://5mnfdrdhr6lf"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_p7xop"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_oauly"]
+
+[resource]
+script = ExtResource("2_oauly")
+text = "你小心翼翼地走進山洞，越往深處走，光芒越強烈。終於，你看到了光源——一座石台上放著一把閃閃發光的古劍！"
+metadata/_custom_type_script = "uid://bpljx2f02lypp"

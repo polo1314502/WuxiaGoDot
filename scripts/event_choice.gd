@@ -19,3 +19,4 @@ extends Resource
 	"training_points": 0,
 	"message": ""
 }
+@export var end_event: bool = false  # 新增：選擇後是否立即結束事件

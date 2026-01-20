@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=3 format=3 uid="uid://c5ece0o4si4tl"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_r07kx"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_oaaa7"]
+
+[resource]
+script = ExtResource("2_oaaa7")
+text = "就在你拿起古劍的瞬間，一個巨大的石像突然活了過來！它是這裡的守護者！"
+metadata/_custom_type_script = "uid://bpljx2f02lypp"

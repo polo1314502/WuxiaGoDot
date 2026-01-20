@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://da2v3tp40ct33"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_7i0c7"]
+
+[resource]
+script = ExtResource("1_7i0c7")
+text = "勇敢進入山洞"
+action_type = "change_stats"
+action_params = {
+"attack": 0,
+"defense": 0,
+"enemy_attack": 0,
+"enemy_defense": 0,
+"enemy_hp": 0,
+"enemy_name": "",
+"enemy_speed": 0,
+"max_hp": 0,
+"message": "你鼓起勇氣走進了山洞...",
+"money": 0,
+"reputation": 5,
+"speed": 0,
+"training_points": 0
+}
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

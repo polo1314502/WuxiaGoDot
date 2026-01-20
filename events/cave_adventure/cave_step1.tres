@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=3 format=3 uid="uid://dbpimg1ikib7c"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_2ixwi"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_pemad"]
+
+[resource]
+script = ExtResource("2_pemad")
+text = "在森林深處，你發現了一個被藤蔓遮蓋的神秘山洞。洞口隱約傳來奇異的光芒..."
+metadata/_custom_type_script = "uid://bpljx2f02lypp"

@@ -111,6 +111,15 @@ func get_current_step() -> EventStep:
 	if current_event and current_step_index < current_event.steps.size():
 		return current_event.steps[current_step_index]
 	return null
+	
+func has_next_step() -> bool:
+	if current_event:
+		return current_step_index + 1 < current_event.steps.size()
+	return false
+
+func next_step():
+	if has_next_step():
+		current_step_index += 1
 
 func process_choice(choice_index: int):
 	var step = get_current_step()

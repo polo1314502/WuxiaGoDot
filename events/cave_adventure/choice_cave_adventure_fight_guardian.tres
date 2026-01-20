@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://4xc6ian5fibj"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_qgans"]
+
+[resource]
+script = ExtResource("1_qgans")
+text = "迎戰守護者"
+action_type = "trigger_battle"
+action_params = {
+"attack": 0,
+"defense": 0,
+"enemy_attack": 20,
+"enemy_defense": 15,
+"enemy_hp": 120,
+"enemy_name": "山洞守護者",
+"enemy_speed": 14,
+"max_hp": 0,
+"message": "守護者咆哮著向你衝來！",
+"money": 0,
+"reputation": 0,
+"speed": 0,
+"training_points": 0
+}
+end_event = true
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

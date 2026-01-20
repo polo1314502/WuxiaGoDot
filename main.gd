@@ -37,6 +37,7 @@ var battle_log = []
 var event_manager: EventManager
 var event_state_machine: EventStateMachine
 var save_manager: SaveManager
+var current_action_result = null  # 新增：儲存當前動作結果
 
 func _ready():
 	# 初始化系統
@@ -128,19 +129,41 @@ func show_event():
 	for child in $UI/EventPanel/ChoicesContainer.get_children():
 		child.queue_free()
 	
-	# 創建選項按鈕
-	for i in range(step.choices.size()):
-		var choice = step.choices[i]
-		var btn = Button.new()
-		btn.text = choice.text
-		btn.custom_minimum_size = Vector2(300, 40)
-		btn.pressed.connect(_on_event_choice_pressed.bind(i))
-		$UI/EventPanel/ChoicesContainer.add_child(btn)
+	# 檢查是否有選項
+	if step.choices.is_empty():
+		# 無選項事件 - 只顯示繼續按鈕
+		var continue_btn = Button.new()
+		continue_btn.text = "繼續"
+		continue_btn.custom_minimum_size = Vector2(200, 40)
+		continue_btn.pressed.connect(func():
+			# 檢查是否還有下一步
+			if event_manager.has_next_step():
+				event_manager.next_step()
+				show_event()
+			else:
+				# 事件結束
+				event_state_machine.complete_event()
+				advance_day()
+				show_training_mode()
+		)
+		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
+	else:
+		# 有選項 - 創建選項按鈕
+		for i in range(step.choices.size()):
+			var choice = step.choices[i]
+			var btn = Button.new()
+			btn.text = choice.text
+			btn.custom_minimum_size = Vector2(300, 40)
+			btn.pressed.connect(_on_event_choice_pressed.bind(i))
+			$UI/EventPanel/ChoicesContainer.add_child(btn)
 	
 	event_state_machine.show_current_step()
 
 func _on_event_choice_pressed(choice_index: int):
 	event_state_machine.handle_choice(choice_index)
+	
+func _handle_action_result(action):
+	current_action_result = action
 
 func _on_event_result_ready(result_text: String):
 	$UI/EventPanel/EventText.text = result_text
@@ -155,9 +178,27 @@ func _on_event_result_ready(result_text: String):
 		continue_btn.text = "繼續"
 		continue_btn.custom_minimum_size = Vector2(200, 40)
 		continue_btn.pressed.connect(func():
-			event_state_machine.complete_event()
-			advance_day()
-			show_training_mode()
+			# 檢查這個選擇是否要求立即結束事件
+			var should_end = false
+			if current_action_result and current_action_result.choice_data:
+				should_end = current_action_result.choice_data.end_event
+			
+			current_action_result = null  # 清除暫存
+			
+			if should_end:
+				# 立即結束事件
+				event_state_machine.complete_event()
+				advance_day()
+				show_training_mode()
+			elif event_manager.has_next_step():
+				# 繼續到下一步
+				event_manager.next_step()
+				show_event()
+			else:
+				# 沒有下一步了，結束事件
+				event_state_machine.complete_event()
+				advance_day()
+				show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	

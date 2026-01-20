@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=5 format=3 uid="uid://m6ea5vdacw6p"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_m4at3"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_a826u"]
+[ext_resource type="Resource" uid="uid://da2v3tp40ct33" path="res://events/cave_adventure/choice_cave_adventure_enter_cave.tres" id="2_ab5fl"]
+[ext_resource type="Resource" uid="uid://b1l4rxrqeg81r" path="res://events/cave_adventure/choice_cave_adventure_leave_cave.tres" id="3_c6t00"]
+
+[resource]
+script = ExtResource("2_a826u")
+text = "洞內傳來低沉的呼吸聲，似乎有什麼生物在裡面。你要進去嗎？"
+choices = Array[ExtResource("1_m4at3")]([ExtResource("2_ab5fl"), ExtResource("3_c6t00")])
+metadata/_custom_type_script = "uid://bpljx2f02lypp"

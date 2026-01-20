@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://de53sugsocgnc"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_aouvn"]
+
+[resource]
+script = ExtResource("1_aouvn")
+text = "拿走寶物"
+action_type = "change_stats"
+action_params = {
+"attack": 8,
+"defense": 5,
+"enemy_attack": 0,
+"enemy_defense": 0,
+"enemy_hp": 0,
+"enemy_name": "",
+"enemy_speed": 0,
+"max_hp": 0,
+"message": "你獲得了一把古劍！",
+"money": 0,
+"reputation": 0,
+"speed": 0,
+"training_points": 0
+}
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

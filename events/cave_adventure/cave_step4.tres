@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=5 format=3 uid="uid://lwc8umqoi5b6"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_53pyy"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_0op8n"]
+[ext_resource type="Resource" uid="uid://de53sugsocgnc" path="res://events/cave_adventure/choice_cave_adventure_take_treasure.tres" id="2_dh8fo"]
+[ext_resource type="Resource" uid="uid://c67yrahqr0ul0" path="res://events/cave_adventure/choice_cave_adventure_leave_treasure.tres" id="3_2vd8y"]
+
+[resource]
+script = ExtResource("2_0op8n")
+text = "古劍散發著強大的靈氣，但你隱約感覺到周圍有危險的氣息..."
+choices = Array[ExtResource("1_53pyy")]([ExtResource("2_dh8fo"), ExtResource("3_2vd8y")])
+metadata/_custom_type_script = "uid://bpljx2f02lypp"
