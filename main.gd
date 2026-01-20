@@ -11,12 +11,14 @@ var player_data = {
 	"exp": 0,
 	"hp": 100,
 	"max_hp": 100,
+	"mp": 50,  # 新增：內力值
+	"max_mp": 50,
 	"attack": 15,
 	"defense": 10,
 	"speed": 12,
 	"money": 100,
 	"reputation": 0,
-	"skills": ["普通攻擊", "連擊"],
+	"skills": ["普通攻擊", "連擊"], # 技能ID列表
 	"training_points": 10
 }
 
@@ -37,6 +39,7 @@ var battle_log = []
 var event_manager: EventManager
 var event_state_machine: EventStateMachine
 var save_manager: SaveManager
+var skill_manager: SkillManager
 var current_action_result = null  # 新增：儲存當前動作結果
 
 func _ready():
@@ -51,6 +54,9 @@ func _ready():
 	event_manager.battle_triggered.connect(_on_battle_triggered)
 	
 	save_manager = SaveManager.new()
+	
+	skill_manager = SkillManager.new(self)  # 新增：初始化技能管理器
+	skill_manager.load_skills_from_directory()
 	
 	# 嘗試讀取存檔
 	if save_manager.has_save():
@@ -220,7 +226,7 @@ func _on_battle_triggered(battle_params: Dictionary):
 		battle_params.get("speed", 10)
 	)
 
-# === 戰鬥系統（保持原樣）===
+# === 戰鬥系統 ===
 func _on_start_battle_pressed():
 	start_battle("山賊", 80, 12, 8, 10)
 
@@ -244,54 +250,47 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
 	event_panel.visible = false
 	battle_panel.visible = true
 	
+	# 清除舊的技能按鈕
+	for child in $UI/BattlePanel/SkillsContainer.get_children():
+		child.queue_free()
+	
+	# 動態生成技能按鈕
+	for skill_id in player_data.skills:
+		var skill = skill_manager.get_skill_by_id(skill_id)
+		if skill:
+			var btn = Button.new()
+			btn.text = "%s (MP:%d)" % [skill.name, skill.mp_cost]
+			btn.custom_minimum_size = Vector2(150, 40)
+			btn.pressed.connect(_on_skill_used.bind(skill_id))
+			$UI/BattlePanel/SkillsContainer.add_child(btn)
+	
 	add_battle_log("遭遇 %s！" % enemy_data.name)
 	update_battle_display()
 	
 	if battle_turn == "enemy":
 		await get_tree().create_timer(1.0).timeout
 		enemy_turn()
-
-func _on_attack_pressed():
+		
+func _on_skill_used(skill_id: String):
 	if battle_turn != "player" or not in_battle or player_data.hp == 0:
 		return
 	
-	var damage = max(1, player_data.attack - enemy_data.defense)
-	enemy_data.hp -= damage
-	add_battle_log("你攻擊 %s，造成 %d 傷害" % [enemy_data.name, damage])
+	var executor = skill_manager.execute_skill(skill_id)
 	
+	if not executor:
+		add_battle_log("無法使用技能！")
+		return
+	
+	# 輸出所有戰鬥日誌
+	for log in executor.get_logs():
+		add_battle_log(log)
+	
+	check_battle_end()
 	if in_battle:
 		battle_turn = "enemy"
 		update_battle_display()
 		await get_tree().create_timer(1.0).timeout
 		enemy_turn()
-
-func _on_combo_pressed():
-	if battle_turn != "player" or not in_battle or player_data.hp == 0:
-		return
-	
-	var damage1 = max(1, int(player_data.attack * 0.7) - enemy_data.defense)
-	var damage2 = max(1, int(player_data.attack * 0.7) - enemy_data.defense)
-	enemy_data.hp -= damage1 + damage2
-	add_battle_log("你使用連擊，造成 %d + %d 傷害" % [damage1, damage2])
-	
-	if in_battle:
-		battle_turn = "enemy"
-		update_battle_display()
-		await get_tree().create_timer(1.0).timeout
-		enemy_turn()
-
-func _on_defend_pressed():
-	if battle_turn != "player" or not in_battle or player_data.hp == 0:
-		return
-	
-	add_battle_log("你擺出防禦姿態")
-	player_data.defense += 5
-	
-	battle_turn = "enemy"
-	update_battle_display()
-	await get_tree().create_timer(1.0).timeout
-	enemy_turn()
-	player_data.defense -= 5
 
 func enemy_turn():
 	if not in_battle:
@@ -370,18 +369,23 @@ func update_stats_display():
 func update_battle_display():
 	var battle_info = """
 	=== 戰鬥中 ===
-	【我方】%s HP: %d/%d
-	【敵方】%s HP: %d/%d
+	【我方】%s 
+	  HP: %d/%d | MP: %d/%d
+	【敵方】%s 
+	  HP: %d/%d
 	
 	當前回合: %s
 	
 	--- 戰鬥記錄 ---
 	%s
 	""" % [
-		player_data.name, player_data.hp, player_data.max_hp,
-		enemy_data.name, enemy_data.hp, enemy_data.max_hp,
+		player_data.name, 
+		player_data.hp, player_data.max_hp,
+		player_data.mp, player_data.max_mp,
+		enemy_data.name, 
+		enemy_data.hp, enemy_data.max_hp,
 		"玩家" if battle_turn == "player" else "敵人",
-		"\n".join(battle_log.slice(-5))
+		"\n".join(battle_log.slice(-6))
 	]
 	$UI/BattlePanel/BattleInfo.text = battle_info
 
@@ -420,12 +424,10 @@ func add_battle_log(text: String):
 #     │   ├── RestBtn (Button)
 #     │   ├── TriggerEventBtn (Button)
 #     │   ├── StartBattleBtn (Button)
-#     │   └── SaveGameBtn (Button) [新增]
+#     │   └── SaveGameBtn (Button)
 #     ├── EventPanel (Panel)
 #     │   ├── EventText (Label)
 #     │   └── ChoicesContainer (VBoxContainer)
 #     └── BattlePanel (Panel)
 #         ├── BattleInfo (Label)
-#         ├── AttackBtn (Button)
-#         ├── ComboBtn (Button)
-#         └── DefendBtn (Button)
+#         └── SkillsContainer (HBoxContainer) [新增：技能按鈕容器]

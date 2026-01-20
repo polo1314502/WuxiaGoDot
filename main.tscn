@@ -31,6 +31,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
 [node name="TrainingPanel" type="Panel" parent="UI" groups=["training panel"]]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
 light_mask = 2
 visibility_layer = 2
@@ -38,74 +39,52 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -80.0
+offset_left = -2.0
+offset_top = -647.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="TrainAttackBtn" type="Button" parent="UI/TrainingPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/TrainingPanel"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 50.0
-offset_top = -15.5
-offset_right = 152.0
-offset_bottom = 15.5
-grow_vertical = 2
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -47.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="TrainAttackBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Train Attack
 "
 
-[node name="TrainDefenseBtn" type="Button" parent="UI/TrainingPanel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25588825
-anchor_top = 0.33919024
-anchor_right = 0.35684565
-anchor_bottom = 0.747085
-offset_left = -44.783264
-offset_top = -2.6352196
-offset_right = -44.783264
-offset_bottom = -2.6352234
-grow_horizontal = 2
-grow_vertical = 0
+[node name="TrainDefenseBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Train Defense"
 metadata/_edit_use_anchors_ = true
 
-[node name="TrainHPBtn" type="Button" parent="UI/TrainingPanel"]
-layout_mode = 0
-offset_left = 450.0
-offset_top = 24.5
-offset_right = 525.0
-offset_bottom = 55.5
+[node name="TrainHPBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Train Hp
 "
 
-[node name="RestBtn" type="Button" parent="UI/TrainingPanel"]
-layout_mode = 0
-offset_left = 650.0
-offset_top = 24.5
-offset_right = 692.0
-offset_bottom = 55.5
+[node name="RestBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Rest"
 
-[node name="StartBattleBtn" type="Button" parent="UI/TrainingPanel"]
-layout_mode = 0
-offset_left = 850.0
-offset_top = 24.5
-offset_right = 946.0
-offset_bottom = 55.5
+[node name="StartBattleBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Start Battle"
 
-[node name="TriggerEventBtn" type="Button" parent="UI/TrainingPanel"]
-layout_mode = 0
-offset_left = 1050.0
-offset_top = 24.5
-offset_right = 1102.0
-offset_bottom = 55.5
+[node name="TriggerEventBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
 text = "Event"
 
 [node name="BattlePanel" type="Panel" parent="UI"]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 visibility_layer = 2
 anchors_preset = 15
@@ -122,36 +101,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AttackBtn" type="Button" parent="UI/BattlePanel"]
+[node name="SkillsContainer" type="HBoxContainer" parent="UI/BattlePanel"]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
+anchors_preset = -1
+anchor_top = 0.8194444
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 300.0
-offset_top = -48.0
-offset_right = 358.0
-offset_bottom = -17.0
+grow_horizontal = 2
 grow_vertical = 0
-text = "Attack"
-
-[node name="ComboBtn" type="Button" parent="UI/BattlePanel"]
-layout_mode = 0
-offset_left = 600.0
-offset_top = 600.0
-offset_right = 663.0
-offset_bottom = 631.0
-text = "Combo"
-
-[node name="DefendBtn" type="Button" parent="UI/BattlePanel"]
-layout_mode = 0
-offset_left = 900.0
-offset_top = 600.0
-offset_right = 965.0
-offset_bottom = 631.0
-text = "Defend"
+metadata/_edit_use_anchors_ = true
 
 [node name="EventPanel" type="Panel" parent="UI"]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 visibility_layer = 2
 anchors_preset = 15
@@ -170,7 +130,6 @@ anchor_bottom = 0.3919753
 offset_top = 1.5258789e-05
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="ChoicesContainer" type="VBoxContainer" parent="UI/EventPanel"]
 layout_mode = 1
@@ -181,12 +140,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="pressed" from="UI/TrainingPanel/TrainAttackBtn" to="." method="_on_train_attack_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/TrainDefenseBtn" to="." method="_on_train_defense_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/TrainHPBtn" to="." method="_on_train_hp_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/RestBtn" to="." method="_on_rest_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/StartBattleBtn" to="." method="_on_start_battle_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
-[connection signal="pressed" from="UI/BattlePanel/AttackBtn" to="." method="_on_attack_pressed"]
-[connection signal="pressed" from="UI/BattlePanel/ComboBtn" to="." method="_on_combo_pressed"]
-[connection signal="pressed" from="UI/BattlePanel/DefendBtn" to="." method="_on_defend_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainAttackBtn" to="." method="_on_train_attack_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainDefenseBtn" to="." method="_on_train_defense_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainHPBtn" to="." method="_on_train_hp_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/RestBtn" to="." method="_on_rest_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/StartBattleBtn" to="." method="_on_start_battle_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
