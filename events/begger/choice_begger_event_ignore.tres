@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://cep2r4imn1trn"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_xviau"]
+
+[resource]
+script = ExtResource("1_xviau")
+text = "無視離開"
+action_type = "change_stats"
+action_params = {
+"attack": 0,
+"defense": 0,
+"enemy_attack": 0,
+"enemy_defense": 0,
+"enemy_hp": 0,
+"enemy_name": "",
+"enemy_speed": 0,
+"max_hp": 0,
+"message": "",
+"money": 0,
+"reputation": -2,
+"speed": 0
+}
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

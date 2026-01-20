@@ -16,10 +16,10 @@ var player_data = {
 	"speed": 12,
 	"money": 100,
 	"reputation": 0,
-	"skills": ["普通攻擊", "連擊"]
+	"skills": ["普通攻擊", "連擊"],
+	"training_points": 10
 }
 
-var training_points = 10
 var days_passed = 0
 
 @onready var mode_label = $UI/ModeLabel
@@ -58,7 +58,6 @@ func _ready():
 			player_data = save_data.player_data
 			event_manager.event_history = save_data.event_history
 			days_passed = save_data.days_passed
-			training_points = save_data.training_points
 	
 	show_training_mode()
 	update_stats_display()
@@ -73,27 +72,27 @@ func show_training_mode():
 	update_stats_display()
 
 func _on_train_attack_pressed():
-	if training_points > 0:
+	if player_data.training_points > 0:
 		player_data.attack += 2
-		training_points -= 1
+		player_data.training_points -= 1
 		advance_day()
 
 func _on_train_defense_pressed():
-	if training_points > 0:
+	if player_data.training_points > 0:
 		player_data.defense += 2
-		training_points -= 1
+		player_data.training_points -= 1
 		advance_day()
 
 func _on_train_hp_pressed():
-	if training_points > 0:
+	if player_data.training_points > 0:
 		player_data.max_hp += 10
 		player_data.hp = player_data.max_hp
-		training_points -= 1
+		player_data.training_points -= 1
 		advance_day()
 
 func _on_rest_pressed():
 	player_data.hp = player_data.max_hp
-	training_points += 5
+	player_data.training_points += 5
 	advance_day()
 
 func _on_trigger_event_pressed():
@@ -102,7 +101,7 @@ func _on_trigger_event_pressed():
 		show_event()
 
 func _on_save_game_pressed():
-	if save_manager.save_game(player_data, event_manager.event_history, days_passed, training_points):
+	if save_manager.save_game(player_data, event_manager.event_history, days_passed):
 		mode_label.text = "遊戲已保存！"
 
 func advance_day():
@@ -110,7 +109,7 @@ func advance_day():
 	mode_label.text = "養成模式 - 第 %d 天" % days_passed
 	update_stats_display()
 	# 自動保存
-	save_manager.save_game(player_data, event_manager.event_history, days_passed, training_points)
+	save_manager.save_game(player_data, event_manager.event_history, days_passed)
 
 # === 事件系統 UI ===
 func show_event():
@@ -311,7 +310,7 @@ func update_stats_display():
 		player_data.hp, player_data.max_hp,
 		player_data.attack, player_data.defense, player_data.speed,
 		player_data.money, player_data.reputation,
-		training_points
+		player_data.training_points
 	]
 
 func update_battle_display():

@@ -4,14 +4,10 @@ extends RefCounted
 
 static func create_action(main_scene, action_type: String, params: Dictionary) -> EventAction:
 	match action_type:
-		"give_money":
-			return ActionGiveMoney.new(main_scene, params)
-		"gain_stats":
-			return ActionGainStats.new(main_scene, params)
+		"change_stats":
+			return ActionChangeStats.new(main_scene, params)
 		"trigger_battle":
 			return ActionTriggerBattle.new(main_scene, params)
-		"change_reputation":
-			return ActionChangeReputation.new(main_scene, params)
 		"buy_item":
 			return ActionBuyItem.new(main_scene, params)
 		_:

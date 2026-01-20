@@ -2,16 +2,8 @@
 class_name EventChoice
 extends Resource
 
-enum ActionType {
-	GIVE_MONEY,
-	GAIN_STATS,
-	TRIGGER_BATTLE,
-	CHANGE_REPUTATION,
-	BUY_ITEM
-}
-
 @export var text: String = ""
-@export_enum("give_money", "gain_stats", "trigger_battle", "change_reputation", "buy_item") var action_type: String = ""
+@export_enum("change_stats", "trigger_battle", "buy_item") var action_type: String = ""
 @export var action_params: Dictionary = {
 	"attack": 0,
 	"defense": 0,
@@ -24,5 +16,6 @@ enum ActionType {
 	"enemy_speed": 0,
 	"money" : 0,
 	"reputation": 0,
+	"training_points": 0,
 	"message": ""
 }

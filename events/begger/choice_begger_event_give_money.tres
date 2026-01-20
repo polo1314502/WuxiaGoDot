@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://cmd6qg2jdyhw5"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_ae0e7"]
+
+[resource]
+script = ExtResource("1_ae0e7")
+text = "給他10兩銀子"
+action_type = "change_stats"
+action_params = {
+"attack": 0,
+"defense": 0,
+"enemy_attack": 0,
+"enemy_defense": 0,
+"enemy_hp": 0,
+"enemy_name": "",
+"enemy_speed": 0,
+"max_hp": 0,
+"message": "",
+"money": -10,
+"reputation": 5,
+"speed": 0
+}
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

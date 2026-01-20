@@ -34,21 +34,23 @@ func _generate_sample_events():
 	
 	var choice1 = EventChoice.new()
 	choice1.text = "給他10兩銀子"
-	choice1.action_type = "give_money"
-	choice1.action_params = {"amount": 10, "reputation": 5}
+	choice1.action_type = "change_stats"
+	choice1.action_params = {"money": -10, "reputation": 5}
 	
 	var choice2 = EventChoice.new()
 	choice2.text = "給他100兩銀子"
-	choice2.action_type = "gain_stats"
+	choice2.action_type = "change_stats"
 	choice2.action_params = {
 		"max_hp": 20,
+		"money": -100,
+		"reputation": 20,
 		"message": "你慷慨解囊！乞丐感激涕零：「少俠大恩，小人傳你一套養生功法！」\n聲望 +20"
 	}
 	
 	var choice3 = EventChoice.new()
 	choice3.text = "無視離開"
-	choice3.action_type = "change_reputation"
-	choice3.action_params = {"amount": -2}
+	choice3.action_type = "change_stats"
+	choice3.action_params = {"reputation": -2}
 	
 	step1.choices = [choice1, choice2, choice3]
 	beggar_event.steps = [step1]
@@ -76,7 +78,7 @@ func _generate_sample_events():
 	
 	var bully_c2 = EventChoice.new()
 	bully_c2.text = "暗中觀察"
-	bully_c2.action_type = "gain_stats"
+	bully_c2.action_type = "change_stats"
 	bully_c2.action_params = {"speed": 2, "message": "你暗中觀察學習到了身法技巧。"}
 	
 	bully_step.choices = [bully_c1, bully_c2]
