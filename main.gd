@@ -316,15 +316,26 @@ func check_battle_end():
 		if player_data.exp >= player_data.level * 100:
 			level_up()
 		
-		event_state_machine.complete_event()
 		await get_tree().create_timer(2.0).timeout
-		advance_day()
-		show_training_mode()
+		
+		# 檢查戰鬥後是否還有後續事件
+		if event_manager.current_event and event_manager.has_next_step():
+			# 有後續事件，繼續顯示
+			event_manager.next_step()
+			advance_day()
+			show_event()
+		else:
+			# 沒有後續事件，正常結束
+			event_state_machine.complete_event()
+			advance_day()
+			show_training_mode()
+			
 	elif player_data.hp <= 0:
 		add_battle_log("你被擊敗了...")
 		player_data.hp = int(player_data.max_hp / 2)
 		player_data.money = max(0, player_data.money - 20)
 		
+		# 戰敗也結束事件
 		event_state_machine.complete_event()
 		await get_tree().create_timer(2.0).timeout
 		advance_day()

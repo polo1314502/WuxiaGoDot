@@ -23,10 +23,6 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="武俠遊戲學習"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/ai_assistant_hub/plugin.cfg", "res://addons/git_bash_here/plugin.cfg")
-
 [plugins]
 
 ai_assistant_hub/llm_api="ollama_api"
