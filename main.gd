@@ -65,6 +65,8 @@ func _ready():
 
 func show_training_mode():
 	in_battle = false
+	if player_data.hp == 0:
+		player_data.hp = 1
 	stats_label.visible = true
 	mode_label.text = "養成模式 - 第 %d 天" % days_passed
 	training_panel.visible = true
@@ -250,7 +252,7 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
 		enemy_turn()
 
 func _on_attack_pressed():
-	if battle_turn != "player" or not in_battle:
+	if battle_turn != "player" or not in_battle or player_data.hp == 0:
 		return
 	
 	var damage = max(1, player_data.attack - enemy_data.defense)
@@ -264,7 +266,7 @@ func _on_attack_pressed():
 		enemy_turn()
 
 func _on_combo_pressed():
-	if battle_turn != "player" or not in_battle:
+	if battle_turn != "player" or not in_battle or player_data.hp == 0:
 		return
 	
 	var damage1 = max(1, int(player_data.attack * 0.7) - enemy_data.defense)
@@ -279,7 +281,7 @@ func _on_combo_pressed():
 		enemy_turn()
 
 func _on_defend_pressed():
-	if battle_turn != "player" or not in_battle:
+	if battle_turn != "player" or not in_battle or player_data.hp == 0:
 		return
 	
 	add_battle_log("你擺出防禦姿態")
@@ -295,9 +297,10 @@ func enemy_turn():
 	if not in_battle:
 		return
 	
-	var damage = max(1, enemy_data.attack - player_data.defense)
-	player_data.hp -= damage
-	add_battle_log("%s 攻擊你，造成 %d 傷害" % [enemy_data.name, damage])
+	if enemy_data.hp > 0:
+		var damage = max(1, enemy_data.attack - player_data.defense)
+		player_data.hp -= damage
+		add_battle_log("%s 攻擊你，造成 %d 傷害" % [enemy_data.name, damage])
 	
 	check_battle_end()
 	if in_battle:
@@ -332,8 +335,7 @@ func check_battle_end():
 			
 	elif player_data.hp <= 0:
 		add_battle_log("你被擊敗了...")
-		player_data.hp = int(player_data.max_hp / 2)
-		player_data.money = max(0, player_data.money - 20)
+		player_data.hp = 0
 		
 		# 戰敗也結束事件
 		event_state_machine.complete_event()
