@@ -7,6 +7,13 @@ script = ExtResource("1_ig7tw")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
+[node name="SaveStatusLabel" type="Label" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ColorRect" type="ColorRect" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +38,6 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
 [node name="TrainingPanel" type="Panel" parent="UI" groups=["training panel"]]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 light_mask = 2
 visibility_layer = 2
@@ -59,30 +65,34 @@ alignment = 1
 
 [node name="TrainAttackBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Train Attack
+text = "鍛鍊力量
 "
 
 [node name="TrainDefenseBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Train Defense"
+text = "鍛鍊硬功"
 metadata/_edit_use_anchors_ = true
 
 [node name="TrainHPBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Train Hp
+text = "增加生命
 "
 
 [node name="RestBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Rest"
+text = "休息"
 
 [node name="StartBattleBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Start Battle"
+text = "戰鬥訓練"
 
 [node name="TriggerEventBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
-text = "Event"
+text = "觸發事件"
+
+[node name="SaveGameBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
+text = "存儲遊戲"
 
 [node name="BattlePanel" type="Panel" parent="UI"]
 self_modulate = Color(1, 1, 1, 0)
@@ -146,3 +156,4 @@ grow_vertical = 2
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/RestBtn" to="." method="_on_rest_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/StartBattleBtn" to="." method="_on_start_battle_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/SaveGameBtn" to="." method="_on_save_game_pressed"]

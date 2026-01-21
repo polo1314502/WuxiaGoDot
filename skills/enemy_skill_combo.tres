@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=4 format=3 uid="uid://b51a0bik8xgr5"]
 
-[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_skill"]
-[ext_resource type="Resource" path="res://skills/enemy_effect_combo.tres" id="2_effect"]
+[ext_resource type="Script" uid="uid://bdqyn7i3pr044" path="res://scripts/skill_effect.gd" id="1_dsh7o"]
+[ext_resource type="Script" uid="uid://cxn8oyoo20uc6" path="res://scripts/skill_data.gd" id="1_skill"]
+[ext_resource type="Resource" uid="uid://fkqeshmhwyqd" path="res://skills/enemy_effect_combo.tres" id="2_effect"]
 
 [resource]
 script = ExtResource("1_skill")
 skill_id = "敵人連擊"
 name = "連擊"
 description = "敵人的連擊，攻擊2次"
-mp_cost = 0
 damage_multiplier = 0.7
 hits = 2
-effects = [ExtResource("2_effect")]
+effects = Array[ExtResource("1_dsh7o")]([ExtResource("2_effect")])
