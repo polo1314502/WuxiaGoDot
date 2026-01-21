@@ -9,14 +9,10 @@ extends Resource
 	"defense": 0,
 	"max_hp": 0,
 	"speed": 0,
-	"enemy_name" : "",
-	"enemy_hp" : 0,
-	"enemy_attack": 0,
-	"enemy_defense": 0,
-	"enemy_speed": 0,
 	"money" : 0,
 	"reputation": 0,
 	"training_points": 0,
 	"message": ""
 }
+@export var enemy_data: EnemyData  # 直接使用 EnemyData 資源（包含技能列表）
 @export var end_event: bool = false  # 新增：選擇後是否立即結束事件

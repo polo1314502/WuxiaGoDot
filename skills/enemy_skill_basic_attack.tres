@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_skill"]
+[ext_resource type="Resource" path="res://skills/enemy_effect_basic_attack.tres" id="2_effect"]
+
+[resource]
+script = ExtResource("1_skill")
+skill_id = "敵人普通攻擊"
+name = "普通攻擊"
+description = "敵人的普通攻擊"
+mp_cost = 0
+damage_multiplier = 1.0
+hits = 1
+effects = [ExtResource("2_effect")]

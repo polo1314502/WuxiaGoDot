@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://skills/enemy_skill_basic_attack.tres" id="2_skill1"]
+[ext_resource type="Resource" path="res://skills/enemy_skill_heavy_strike.tres" id="3_skill2"]
+[ext_resource type="Resource" path="res://skills/enemy_skill_combo.tres" id="4_skill3"]
+
+[resource]
+script = ExtResource("1_enemy")
+enemy_id = "江湖武者"
+name = "江湖武者"
+description = "在江湖上闖蕩多年的武者，掌握多種武技"
+max_hp = 120
+attack = 18
+defense = 14
+speed = 16
+skills = [ExtResource("2_skill1"), ExtResource("3_skill2"), ExtResource("4_skill3")]
+exp_reward = 80
+money_reward = 150

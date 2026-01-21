@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="EventStep" load_steps=5 format=3 uid="uid://bgqk1623a45va"]
+[gd_resource type="Resource" script_class="EventStep" load_steps=4 format=3 uid="uid://bgqk1623a45va"]
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_tkdau"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_2aw3c"]
-[ext_resource type="Resource" uid="uid://4xc6ian5fibj" path="res://events/cave_adventure/choice_cave_adventure_fight_guardian.tres" id="2_kvqer"]
-[ext_resource type="Resource" uid="uid://dverehojxaaht" path="res://events/cave_adventure/choice_cave_adventure_escape.tres" id="3_ogtyo"]
+[ext_resource type="Resource" uid="uid://da8rof63p73kk" path="res://events/cave_adventure/choice_cave_adventure_fight_guardian.tres" id="2_kvqer"]
 
 [resource]
 script = ExtResource("2_2aw3c")
-text = "守護者擋住了洞口，你必須做出選擇！"
-choices = Array[ExtResource("1_tkdau")]([ExtResource("2_kvqer"), ExtResource("3_ogtyo")])
+text = "惡霸擋住了洞口，戰鬥無可避免！"
+choices = Array[ExtResource("1_tkdau")]([ExtResource("2_kvqer")])
 metadata/_custom_type_script = "uid://bpljx2f02lypp"

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://dpkn1n68lwx3v"]
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://b5htp6w45xmk7"]
 
-[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_p7p11"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_u2ewb"]
 
 [resource]
-script = ExtResource("1_p7p11")
+script = ExtResource("1_u2ewb")
 text = "上前制止"
 action_type = "trigger_battle"
 action_params = {
@@ -13,10 +13,9 @@ action_params = {
 "enemy_defense": 6,
 "enemy_hp": 60,
 "enemy_name": "惡霸",
-"enemy_skills": [null],
 "enemy_speed": 8,
 "max_hp": 0,
-"message": "",
+"message": "你決定路見不平！",
 "money": 0,
 "reputation": 0,
 "speed": 0,

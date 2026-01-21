@@ -7,6 +7,6 @@
 
 [resource]
 script = ExtResource("2_a826u")
-text = "洞內傳來低沉的呼吸聲，似乎有什麼生物在裡面。你要進去嗎？"
+text = "洞內傳來低沉的呼吸聲，似乎有人在裡面。你要進去嗎？"
 choices = Array[ExtResource("1_m4at3")]([ExtResource("2_ab5fl"), ExtResource("3_c6t00")])
 metadata/_custom_type_script = "uid://bpljx2f02lypp"

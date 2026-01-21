@@ -125,6 +125,11 @@ func process_choice(choice_index: int):
 		return
 	
 	var choice = step.choices[choice_index]
+	
+	# 如果有 EnemyData 資源，直接使用
+	if choice.enemy_data:
+		choice.action_params["enemy_data"] = choice.enemy_data
+	
 	var action = ActionFactory.create_action(main_scene, choice.action_type, choice.action_params)
 	
 	if action and action.can_execute():

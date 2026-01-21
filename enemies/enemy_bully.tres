@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://skills/enemy_skill_basic_attack.tres" id="2_skill1"]
+
+[resource]
+script = ExtResource("1_enemy")
+enemy_id = "惡霸"
+name = "惡霸"
+description = "橫行鄉里的惡霸，只會些粗淺的拳腳功夫"
+max_hp = 60
+attack = 10
+defense = 6
+speed = 8
+skills = [ExtResource("2_skill1")]
+exp_reward = 30
+money_reward = 80

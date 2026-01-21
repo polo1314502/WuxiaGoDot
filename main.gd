@@ -40,6 +40,7 @@ var event_manager: EventManager
 var event_state_machine: EventStateMachine
 var save_manager: SaveManager
 var skill_manager: SkillManager
+var enemy_manager: EnemyManager  # 新增：敵人管理器
 var current_action_result = null  # 新增：儲存當前動作結果
 
 func _ready():
@@ -57,6 +58,9 @@ func _ready():
 	
 	skill_manager = SkillManager.new(self)  # 新增：初始化技能管理器
 	skill_manager.load_skills_from_directory()
+	
+	enemy_manager = EnemyManager.new(self)  # 新增：初始化敵人管理器
+	enemy_manager.load_enemies_from_directory()
 	
 	# 嘗試讀取存檔
 	if save_manager.has_save():
@@ -228,21 +232,49 @@ func _on_event_state_changed(new_state: int):
 	pass  # 可用於 Debug 或顯示狀態
 
 func _on_battle_triggered(battle_params: Dictionary):
-	# 等待玩家看到結果文字
-	await get_tree().create_timer(2.0).timeout
-	start_battle(
-		battle_params.get("name", "敵人"),
-		battle_params.get("hp", 80),
-		battle_params.get("attack", 12),
-		battle_params.get("defense", 8),
-		battle_params.get("speed", 10)
-	)
+	# 縮短等待時間，讓玩家可以更快看到戰鬥文字後進入戰鬥
+	await get_tree().create_timer(0.5).timeout
+	
+	# 檢查是否使用 EnemyData 資源
+	if battle_params.has("enemy_data") and battle_params.enemy_data is EnemyData:
+		start_battle_with_enemy(battle_params.enemy_data)
+	else:
+		# 使用舊方式
+		start_battle(
+			battle_params.get("name", "敵人"),
+			battle_params.get("hp", 80),
+			battle_params.get("attack", 12),
+			battle_params.get("defense", 8),
+			battle_params.get("speed", 10),
+			battle_params.get("skills", [])  # 新增：敵人技能列表
+		)
 
 # === 戰鬥系統 ===
 func _on_start_battle_pressed():
-	start_battle("山賊", 80, 12, 8, 10)
+	# 測試：使用敵人ID創建戰鬥
+	var enemy = enemy_manager.get_enemy_by_id("山賊")
+	if enemy:
+		start_battle_with_enemy(enemy)
+	else:
+		# 如果找不到敵人資源，使用舊方法
+		start_battle("山賊", 80, 12, 8, 10, ["敵人普通攻擊", "敵人重擊"])
 
-func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
+# 使用 EnemyData 創建戰鬥
+func start_battle_with_enemy(enemy: EnemyData):
+	var battle_data = enemy.create_battle_instance()
+	start_battle(
+		battle_data.name,
+		battle_data.hp,
+		battle_data.attack,
+		battle_data.defense,
+		battle_data.speed,
+		battle_data.skills
+	)
+	# 保存獎勵數據
+	enemy_data["exp_reward"] = battle_data.exp_reward
+	enemy_data["money_reward"] = battle_data.money_reward
+
+func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int, skills: Array = []):
 	in_battle = true
 	stats_label.visible = false
 	enemy_data = {
@@ -251,7 +283,8 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
 		"max_hp": hp,
 		"attack": atk,
 		"defense": def,
-		"speed": spd
+		"speed": spd,
+		"skills": skills  # 敵人技能列表（技能ID）
 	}
 	
 	battle_log.clear()
@@ -311,9 +344,27 @@ func enemy_turn():
 		return
 	
 	if enemy_data.hp > 0:
-		var damage = max(1, enemy_data.attack - player_data.defense)
-		player_data.hp -= damage
-		add_battle_log("%s 攻擊你，造成 %d 傷害" % [enemy_data.name, damage])
+		# 敵人選擇技能
+		var used_skill = false
+		
+		if enemy_data.skills.size() > 0:
+			# 隨機選擇一個技能
+			var skill_id = enemy_data.skills[randi() % enemy_data.skills.size()]
+			var skill = skill_manager.get_skill_by_id(skill_id)
+			
+			if skill:
+				var executor = EnemySkillExecutor.new(self, skill)
+				if executor.can_execute():
+					executor.execute()
+					for log in executor.get_logs():
+						add_battle_log(log)
+					used_skill = true
+		
+		# 如果沒有技能或無法使用技能，使用普通攻擊
+		if not used_skill:
+			var damage = max(1, enemy_data.attack - player_data.defense)
+			player_data.hp -= damage
+			add_battle_log("%s 攻擊你，造成 %d 傷害" % [enemy_data.name, damage])
 	
 	check_battle_end()
 	if in_battle:
@@ -323,8 +374,9 @@ func enemy_turn():
 func check_battle_end():
 	if enemy_data.hp <= 0:
 		add_battle_log("你獲勝了！")
-		var exp_gain = 50
-		var money_gain = 100
+		# 使用敵人數據中的獎勵，如果沒有則使用默認值
+		var exp_gain = enemy_data.get("exp_reward", 50)
+		var money_gain = enemy_data.get("money_reward", 100)
 		player_data.exp += exp_gain
 		player_data.money += money_gain
 		add_battle_log("獲得 %d 經驗，%d 銀兩" % [exp_gain, money_gain])
