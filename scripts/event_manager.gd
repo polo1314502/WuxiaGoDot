@@ -6,92 +6,90 @@ signal event_started(event_id: String)
 signal event_completed(event_id: String)
 signal choice_made(choice_index: int)
 signal battle_triggered(battle_params: Dictionary)
+signal auto_event_triggered(event: EventData)  # 新增：自動觸發事件信號
 
 var main_scene
 var current_event: EventData = null
 var current_step_index: int = 0
 var event_history: Dictionary = {}  # 記錄已觸發的事件
-var available_events: Array[EventData] = []
+var available_events: Array = []
 
 func _init(main):
 	main_scene = main
 
 func load_events_from_directory(path: String = "res://events/"):
 	available_events.clear()
-	# 在實際專案中，這裡會掃描目錄並載入所有 .tres 文件
-	# 現在我們用代碼生成範例事件
-	#_generate_sample_events()
 	_scan_directory(path)
-
-func _generate_sample_events():
-	# 乞丐事件
-	var beggar_event = EventData.new()
-	beggar_event.event_id = "beggar"
-	beggar_event.title = "乞丐求助"
-	
-	var step1 = EventStep.new()
-	step1.text = "路邊有個乞丐攔住了你：「少俠，能否施捨點銀兩？」"
-	
-	var choice1 = EventChoice.new()
-	choice1.text = "給他10兩銀子"
-	choice1.action_type = "change_stats"
-	choice1.action_params = {"money": -10, "reputation": 5}
-	
-	var choice2 = EventChoice.new()
-	choice2.text = "給他100兩銀子"
-	choice2.action_type = "change_stats"
-	choice2.action_params = {
-		"max_hp": 20,
-		"money": -100,
-		"reputation": 20,
-		"message": "你慷慨解囊！乞丐感激涕零：「少俠大恩，小人傳你一套養生功法！」\n聲望 +20"
-	}
-	
-	var choice3 = EventChoice.new()
-	choice3.text = "無視離開"
-	choice3.action_type = "change_stats"
-	choice3.action_params = {"reputation": -2}
-	
-	step1.choices = [choice1, choice2, choice3]
-	beggar_event.steps = [step1]
-	available_events.append(beggar_event)
-	
-	# 惡霸事件
-	var bully_event = EventData.new()
-	bully_event.event_id = "bully"
-	bully_event.title = "惡霸欺人"
-	
-	var bully_step = EventStep.new()
-	bully_step.text = "你看到幾個惡霸正在欺負一個小孩。"
-	
-	var bully_c1 = EventChoice.new()
-	bully_c1.text = "上前制止"
-	bully_c1.action_type = "trigger_battle"
-	bully_c1.action_params = {
-		"enemy_name": "惡霸",
-		"hp": 60,
-		"attack": 10,
-		"defense": 6,
-		"speed": 8,
-		"message": "你決定路見不平！\n聲望 +10"
-	}
-	
-	var bully_c2 = EventChoice.new()
-	bully_c2.text = "暗中觀察"
-	bully_c2.action_type = "change_stats"
-	bully_c2.action_params = {"speed": 2, "message": "你暗中觀察學習到了身法技巧。"}
-	
-	bully_step.choices = [bully_c1, bully_c2]
-	bully_event.steps = [bully_step]
-	available_events.append(bully_event)
 
 func trigger_random_event():
 	if available_events.is_empty():
 		return null
 	
-	var event = available_events[randi() % available_events.size()]
+	# 過濾出可以觸發的事件
+	var valid_events = get_valid_events()
+	
+	if valid_events.is_empty():
+		return null
+	
+	# 按優先級排序
+	valid_events.sort_custom(func(a, b): return a.priority > b.priority)
+	
+	# 如果有高優先級事件，優先觸發
+	if valid_events.size() > 0 and valid_events[0].priority > 0:
+		trigger_event(valid_events[0])
+		return valid_events[0]
+	
+	# 否則隨機選擇
+	var event = valid_events[randi() % valid_events.size()]
 	trigger_event(event)
 	return event
+
+func get_valid_events() -> Array:
+	var valid = []
+	
+	for event in available_events:
+		if can_trigger_event(event):
+			valid.append(event)
+	
+	return valid
+
+func can_trigger_event(event: EventData) -> bool:
+	# 檢查是否可重複
+	if not event.can_repeat:
+		if event_history.has(event.event_id) and event_history[event.event_id].size() > 0:
+			return false
+	
+	# 檢查前置條件
+	for prereq in event.prerequisites:
+		if prereq is EventCondition:
+			if not prereq.check(main_scene):
+				return false
+	
+	# 檢查觸發條件
+	if event.trigger_conditions.is_empty():
+		return true  # 沒有觸發條件，總是可觸發
+	
+	# 所有觸發條件都要滿足
+	for condition in event.trigger_conditions:
+		if condition is EventCondition:
+			if not condition.check(main_scene):
+				return false
+	
+	return true
+
+func check_auto_trigger_events():
+	
+	for event in available_events:
+		
+		if event.trigger_conditions.is_empty():
+			continue
+		
+		if can_trigger_event(event):
+			trigger_event(event)
+			auto_event_triggered.emit(event)
+			return event
+		
+	return null
 
 func trigger_event(event: EventData):
 	current_event = event
@@ -111,7 +109,7 @@ func get_current_step() -> EventStep:
 	if current_event and current_step_index < current_event.steps.size():
 		return current_event.steps[current_step_index]
 	return null
-	
+
 func has_next_step() -> bool:
 	if current_event:
 		return current_step_index + 1 < current_event.steps.size()

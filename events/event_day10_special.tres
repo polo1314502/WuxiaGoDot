@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3 uid="uid://bp5i3abxdhjyf"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_0vmrx"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_83mbk"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="3_1bl8n"]
+[ext_resource type="Resource" uid="uid://br70um84n5xkg" path="res://events/event_day10/event_day10_step.tres" id="3_fxmmc"]
+[ext_resource type="Resource" uid="uid://b12gl4nuikwvm" path="res://events/event_day10/condition_day_10.tres" id="4_83mbk"]
+
+[resource]
+script = ExtResource("1_0vmrx")
+event_id = "day10_special"
+title = "師父召見"
+steps = Array[ExtResource("2_83mbk")]([ExtResource("3_fxmmc")])
+trigger_conditions = Array[ExtResource("3_1bl8n")]([ExtResource("4_83mbk")])
+priority = 10
+metadata/_custom_type_script = "uid://qx7n1yhiw8ee"

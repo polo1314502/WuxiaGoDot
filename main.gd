@@ -117,8 +117,20 @@ func advance_day():
 	days_passed += 1
 	mode_label.text = "養成模式 - 第 %d 天" % days_passed
 	update_stats_display()
+	
 	# 自動保存
 	save_manager.save_game(player_data, event_manager.event_history, days_passed)
+	
+	# 檢查是否有自動觸發的事件
+	var auto_event = event_manager.check_auto_trigger_events()
+	if auto_event:
+		# 延遲一下再觸發事件，讓玩家看到日期變化
+		await get_tree().create_timer(0.5).timeout
+		show_event()
+
+func _on_auto_event_triggered(event: EventData):
+	"""處理自動觸發的事件"""
+	mode_label.text = "第 %d 天 - %s" % [days_passed, event.title]
 
 # === 事件系統 UI ===
 func show_event():
@@ -259,7 +271,10 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int):
 		var skill = skill_manager.get_skill_by_id(skill_id)
 		if skill:
 			var btn = Button.new()
-			btn.text = "%s (MP:%d)" % [skill.name, skill.mp_cost]
+			if skill.mp_cost == 0:
+				btn.text = skill.name
+			else:
+				btn.text = "%s (內力:%d)" % [skill.name, skill.mp_cost]
 			btn.custom_minimum_size = Vector2(150, 40)
 			btn.pressed.connect(_on_skill_used.bind(skill_id))
 			$UI/BattlePanel/SkillsContainer.add_child(btn)
