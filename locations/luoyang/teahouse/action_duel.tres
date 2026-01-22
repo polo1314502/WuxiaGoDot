@@ -1,17 +1,11 @@
-[gd_resource type="Resource" script_class="LocationAction" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="LocationAction" load_steps=3 format=3 uid="uid://cqyrp4i678qk6"]
 
-[ext_resource type="Script" path="res://scripts/location_action.gd" id="1"]
+[ext_resource type="Script" uid="uid://cjk2bbg3to3yl" path="res://scripts/location_action.gd" id="1"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_yxp13"]
 
 [resource]
 script = ExtResource("1")
 action_id = "tea_duel"
 action_name = "與高手切磋"
 description = "向茶館中的武林高手請教武藝。"
-available_conditions = Array[Resource]([])
-trigger_event_id = "teahouse_duel_event"
-is_event_sequence = false
-event_sequence = Array[String]([])
-cost_money = 0
-cost_items = {}
-repeatable = true
-cooldown_days = 5
+trigger_event_id = "teahouse_bully"

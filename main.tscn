@@ -37,6 +37,37 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
+[node name="LocationPanel" type="Panel" parent="UI"]
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/LocationPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LocationText" type="RichTextLabel" parent="UI/LocationPanel/VBoxContainer"]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="LocationList" type="VBoxContainer" parent="UI/LocationPanel/VBoxContainer"]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="UI/LocationPanel/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "返回"
+
 [node name="TrainingPanel" type="Panel" parent="UI" groups=["training panel"]]
 self_modulate = Color(1, 1, 1, 0)
 light_mask = 2
@@ -60,7 +91,7 @@ offset_top = -47.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 100
+theme_override_constants/separation = 75
 alignment = 1
 
 [node name="TrainAttackBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
@@ -89,6 +120,10 @@ text = "戰鬥訓練"
 [node name="TriggerEventBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
 text = "觸發事件"
+
+[node name="ExploreButton" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
+text = "探索場景"
 
 [node name="SaveGameBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
@@ -156,4 +191,5 @@ grow_vertical = 2
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/RestBtn" to="." method="_on_rest_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/StartBattleBtn" to="." method="_on_start_battle_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/ExploreButton" to="." method="_on_explore_locations_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/SaveGameBtn" to="." method="_on_save_game_pressed"]

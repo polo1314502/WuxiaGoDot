@@ -55,7 +55,7 @@ func _scan_directory(path: String):
 
 ## 獲取可用地點列表
 func get_available_locations() -> Array[LocationData]:
-	var available = []
+	var available: Array[LocationData] = []
 	for location in all_locations:
 		if is_location_available(location):
 			available.append(location)
@@ -79,7 +79,7 @@ func get_available_sub_locations() -> Array[SubLocation]:
 	if not current_location:
 		return []
 	
-	var available = []
+	var available: Array[SubLocation] = []
 	for sub_loc in current_location.sub_locations:
 		if is_sub_location_available(sub_loc):
 			available.append(sub_loc)
@@ -102,7 +102,7 @@ func get_available_actions() -> Array[LocationAction]:
 	if not current_sub_location:
 		return []
 	
-	var available = []
+	var available: Array[LocationAction] = []
 	for action in current_sub_location.actions:
 		if is_action_available(action):
 			available.append(action)
@@ -110,25 +110,6 @@ func get_available_actions() -> Array[LocationAction]:
 
 ## 檢查動作是否可用
 func is_action_available(action: LocationAction) -> bool:
-	# 檢查冷卻
-	if action.cooldown_days > 0 and not action.repeatable:
-		if action_history.has(action.action_id):
-			var last_used = action_history[action.action_id].get("last_used_day", -999)
-			if main_scene.days_passed - last_used < action.cooldown_days:
-				return false
-	
-	# 檢查是否可重複
-	if not action.repeatable:
-		if action_history.has(action.action_id):
-			var use_count = action_history[action.action_id].get("use_count", 0)
-			if use_count > 0:
-				return false
-	
-	# 檢查金錢
-	if action.cost_money > 0:
-		if main_scene.player_data.money < action.cost_money:
-			return false
-	
 	# 檢查條件
 	if action.available_conditions.is_empty():
 		return true
@@ -139,10 +120,6 @@ func execute_action(action: LocationAction) -> bool:
 	if not is_action_available(action):
 		return false
 	
-	# 消耗金錢
-	if action.cost_money > 0:
-		main_scene.player_data.money -= action.cost_money
-	
 	# 記錄使用歷史
 	if not action_history.has(action.action_id):
 		action_history[action.action_id] = {}
@@ -151,12 +128,7 @@ func execute_action(action: LocationAction) -> bool:
 	action_history[action.action_id]["use_count"] = action_history[action.action_id].get("use_count", 0) + 1
 	
 	# 觸發事件
-	if action.is_event_sequence:
-		# 觸發事件序列
-		start_event_sequence(action.event_sequence)
-	else:
-		# 觸發單個事件
-		trigger_event_by_id(action.trigger_event_id)
+	trigger_event_by_id(action.trigger_event_id)
 	
 	action_executed.emit(action)
 	return true
@@ -165,13 +137,18 @@ func execute_action(action: LocationAction) -> bool:
 func trigger_event_by_id(event_id: String):
 	var event = main_scene.event_manager.get_event_by_id(event_id)
 	if event:
+		main_scene.event_triggered_from_location = true  # 標記事件從場景模式觸發
 		main_scene.event_manager.trigger_event(event)
+		main_scene.show_event()
+	else:
+		print("警告：找不到事件 ID: ", event_id)
 
 ## 開始事件序列
 func start_event_sequence(event_ids: Array[String]):
 	if event_ids.is_empty():
 		return
 	
+	main_scene.event_triggered_from_location = true  # 標記事件序列從場景模式觸發
 	# 將事件序列存儲到主場景中，逐個觸發
 	main_scene.start_event_sequence(event_ids)
 
@@ -187,19 +164,4 @@ func leave_location():
 ## 獲取動作的描述文本（包含冷卻和消耗資訊）
 func get_action_display_text(action: LocationAction) -> String:
 	var text = action.action_name
-	
-	if action.cost_money > 0:
-		text += " (消耗:%d文)" % action.cost_money
-	
-	if not is_action_available(action):
-		if action.cost_money > 0 and main_scene.player_data.money < action.cost_money:
-			text += " [金錢不足]"
-		elif not action.repeatable:
-			text += " [已使用]"
-		elif action.cooldown_days > 0:
-			var last_used = action_history.get(action.action_id, {}).get("last_used_day", -999)
-			var remaining = action.cooldown_days - (main_scene.days_passed - last_used)
-			if remaining > 0:
-				text += " [冷卻中:%d天]" % remaining
-	
 	return text

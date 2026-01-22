@@ -1,14 +1,13 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="LocationData" load_steps=5 format=3 uid="uid://biivu3gy42yw6"]
 
-[ext_resource type="Script" path="res://scripts/location_data.gd" id="1"]
-[ext_resource type="Resource" path="res://locations/luoyang/sublocation_teahouse.tres" id="2"]
-[ext_resource type="Resource" path="res://locations/luoyang/sublocation_inn.tres" id="3"]
+[ext_resource type="Script" uid="uid://cb70xs13jaum1" path="res://scripts/location_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_c2ee1"]
+[ext_resource type="Resource" uid="uid://v6h6a0t07d3a" path="res://locations/luoyang/sublocation_teahouse.tres" id="2"]
+[ext_resource type="Script" uid="uid://bsjopm7pdfaog" path="res://scripts/sub_location.gd" id="3_2im4l"]
 
 [resource]
 script = ExtResource("1")
 location_id = "luoyang"
 location_name = "洛陽"
 description = "中原繁華之地，武林高手雲集。街道上人來人往，各種店鋪林立。"
-available_conditions = Array[Resource]([])
-sub_locations = Array[Resource]([ExtResource("2"), ExtResource("3")])
-illustration_path = ""
+sub_locations = Array[ExtResource("3_2im4l")]([ExtResource("2")])

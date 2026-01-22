@@ -29,6 +29,7 @@ var days_passed = 0
 @onready var battle_panel = $UI/BattlePanel
 @onready var event_panel = $UI/EventPanel
 @onready var stats_label = $UI/StatsLabel
+@onready var location_panel = $UI/LocationPanel
 
 var in_battle = false
 var enemy_data = {}
@@ -45,6 +46,7 @@ var location_manager: LocationManager  # 新增：場景管理器
 var current_action_result = null  # 新增：儲存當前動作結果
 var event_sequence: Array[String] = []  # 事件序列
 var event_sequence_index: int = 0  # 當前事件序列索引
+var event_triggered_from_location: bool = false  # 記錄事件是否從場景模式觸發
 
 func _ready():
 	# 初始化系統
@@ -89,7 +91,19 @@ func show_training_mode():
 	training_panel.visible = true
 	battle_panel.visible = false
 	event_panel.visible = false
+	location_panel.visible = false  # 添加這一行
 	update_stats_display()
+
+func return_to_location_mode():
+	event_panel.visible = false
+	battle_panel.visible = false
+	location_panel.visible = true
+	if location_manager.current_sub_location or location_manager.current_location:
+		# 如果在主地點或子地點，返回主地點界面
+		enter_location(location_manager.current_location)
+	else:
+		# 都不在，返回地點選擇
+		show_location_selection()
 
 func _on_train_attack_pressed():
 	if player_data.training_points > 0:
@@ -116,6 +130,7 @@ func _on_rest_pressed():
 	advance_day()
 
 func _on_trigger_event_pressed():
+	event_triggered_from_location = false  # 從養成模式觸發
 	var event = event_manager.trigger_random_event()
 	if event:
 		show_event()
@@ -127,17 +142,18 @@ func _on_explore_locations_pressed():
 func show_location_selection():
 	"""顯示場景選擇UI"""
 	mode_label.text = "選擇地點"
+	stats_label.visible = false
 	training_panel.visible = false
 	battle_panel.visible = false
 	event_panel.visible = false
-	$UI/LocationPanel.visible = true
+	location_panel.visible = true
 	
 	var available_locations = location_manager.get_available_locations()
 	update_location_list(available_locations)
 
 func update_location_list(locations: Array[LocationData]):
 	"""更新地點列表"""
-	var location_list = $UI/LocationPanel/LocationList
+	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
 	
 	# 清空現有按鈕
 	for child in location_list.get_children():
@@ -167,10 +183,10 @@ func enter_location(location: LocationData):
 		return
 	
 	# 顯示子地點選擇
-	var location_text = $UI/LocationPanel/LocationText
-	location_text.text = location.description
+	var location_text = $UI/LocationPanel/VBoxContainer/LocationText
+	location_text.text = "\n" + location.description
 	
-	var location_list = $UI/LocationPanel/LocationList
+	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
 	
 	# 清空現有按鈕
 	for child in location_list.get_children():
@@ -197,10 +213,10 @@ func enter_sub_location(sub_location: SubLocation):
 	var actions = location_manager.get_available_actions()
 	
 	# 顯示子地點描述和動作
-	var location_text = $UI/LocationPanel/LocationText
-	location_text.text = sub_location.description
+	var location_text = $UI/LocationPanel/VBoxContainer/LocationText
+	location_text.text = "\n" + sub_location.description
 	
-	var location_list = $UI/LocationPanel/LocationList
+	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
 	
 	# 清空現有按鈕
 	for child in location_list.get_children():
@@ -242,7 +258,11 @@ func trigger_next_event_in_sequence():
 		# 序列結束
 		event_sequence.clear()
 		event_sequence_index = 0
-		show_training_mode()
+		# 根據觸發來源返回相應模式
+		if event_triggered_from_location:
+			return_to_location_mode()
+		else:
+			show_training_mode()
 		return
 	
 	var event_id = event_sequence[event_sequence_index]
@@ -265,11 +285,6 @@ func on_event_sequence_step_completed():
 		# 序列結束
 		event_sequence.clear()
 		event_sequence_index = 0
-
-func _on_trigger_event_pressed():
-	var event = event_manager.trigger_random_event()
-	if event:
-		show_event()
 
 func _on_save_game_pressed():
 	if save_manager.save_game(player_data, event_manager.event_history, days_passed):
@@ -303,6 +318,7 @@ func show_event():
 	mode_label.text = "事件：" + event_manager.current_event.title
 	training_panel.visible = false
 	battle_panel.visible = false
+	location_panel.visible = false
 	event_panel.visible = true
 	
 	$UI/EventPanel/EventText.text = step.text
@@ -325,13 +341,17 @@ func show_event():
 			else:
 				# 事件結束
 				event_state_machine.complete_event()
-				advance_day()
 				
 				# 檢查是否在事件序列中
 				if not event_sequence.is_empty():
 					on_event_sequence_step_completed()
 				else:
-					show_training_mode()
+					# 根據觸發來源返回相應模式
+					if event_triggered_from_location:
+						return_to_location_mode()
+					else:
+						advance_day()
+						show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	else:
@@ -376,7 +396,11 @@ func _on_event_result_ready(result_text: String):
 				# 立即結束事件
 				event_state_machine.complete_event()
 				advance_day()
-				show_training_mode()
+				# 根據觸發來源返回相應模式
+				if event_triggered_from_location:
+					return_to_location_mode()
+				else:
+					show_training_mode()
 			elif event_manager.has_next_step():
 				# 繼續到下一步
 				event_manager.next_step()
@@ -385,7 +409,11 @@ func _on_event_result_ready(result_text: String):
 				# 沒有下一步了，結束事件
 				event_state_machine.complete_event()
 				advance_day()
-				show_training_mode()
+				# 根據觸發來源返回相應模式
+				if event_triggered_from_location:
+					return_to_location_mode()
+				else:
+					show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	
@@ -560,7 +588,11 @@ func check_battle_end():
 			# 沒有後續事件，正常結束
 			event_state_machine.complete_event()
 			advance_day()
-			show_training_mode()
+			# 根據觸發來源返回相應模式
+			if event_triggered_from_location:
+				return_to_location_mode()
+			else:
+				show_training_mode()
 			
 	elif player_data.hp <= 0:
 		add_battle_log("你被擊敗了...")
@@ -570,7 +602,11 @@ func check_battle_end():
 		event_state_machine.complete_event()
 		await get_tree().create_timer(2.0).timeout
 		advance_day()
-		show_training_mode()
+		# 根據觸發來源返回相應模式
+		if event_triggered_from_location:
+			return_to_location_mode()
+		else:
+			show_training_mode()
 
 func level_up():
 	player_data.level += 1
