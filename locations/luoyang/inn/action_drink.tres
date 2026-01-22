@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="LocationAction" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/location_action.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+action_id = "drink_wine"
+action_name = "飲酒暢談"
+description = "與客棧中的江湖人士飲酒暢談，可能會觸發特殊事件。"
+available_conditions = Array[Resource]([])
+trigger_event_id = ""
+is_event_sequence = true
+event_sequence = Array[String](["inn_drink_start", "inn_drunk_man", "inn_fight_or_help"])
+cost_money = 15
+cost_items = {}
+repeatable = true
+cooldown_days = 1

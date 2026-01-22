@@ -41,7 +41,10 @@ var event_state_machine: EventStateMachine
 var save_manager: SaveManager
 var skill_manager: SkillManager
 var enemy_manager: EnemyManager  # 新增：敵人管理器
+var location_manager: LocationManager  # 新增：場景管理器
 var current_action_result = null  # 新增：儲存當前動作結果
+var event_sequence: Array[String] = []  # 事件序列
+var event_sequence_index: int = 0  # 當前事件序列索引
 
 func _ready():
 	# 初始化系統
@@ -61,6 +64,10 @@ func _ready():
 	
 	enemy_manager = EnemyManager.new(self)  # 新增：初始化敵人管理器
 	enemy_manager.load_enemies_from_directory()
+	
+	location_manager = LocationManager.new(self)  # 新增：初始化場景管理器
+	location_manager.load_locations_from_directory()
+	location_manager.action_executed.connect(_on_location_action_executed)
 	
 	# 嘗試讀取存檔
 	if save_manager.has_save():
@@ -107,6 +114,157 @@ func _on_rest_pressed():
 	player_data.hp = player_data.max_hp
 	player_data.training_points += 5
 	advance_day()
+
+func _on_trigger_event_pressed():
+	var event = event_manager.trigger_random_event()
+	if event:
+		show_event()
+
+func _on_explore_locations_pressed():
+	"""新增：打開場景選擇界面"""
+	show_location_selection()
+
+func show_location_selection():
+	"""顯示場景選擇UI"""
+	mode_label.text = "選擇地點"
+	training_panel.visible = false
+	battle_panel.visible = false
+	event_panel.visible = false
+	$UI/LocationPanel.visible = true
+	
+	var available_locations = location_manager.get_available_locations()
+	update_location_list(available_locations)
+
+func update_location_list(locations: Array[LocationData]):
+	"""更新地點列表"""
+	var location_list = $UI/LocationPanel/LocationList
+	
+	# 清空現有按鈕
+	for child in location_list.get_children():
+		child.queue_free()
+	
+	# 創建地點按鈕
+	for location in locations:
+		var btn = Button.new()
+		btn.text = location.location_name
+		btn.pressed.connect(func(): enter_location(location))
+		location_list.add_child(btn)
+	
+	# 添加返回按鈕
+	var back_btn = Button.new()
+	back_btn.text = "返回"
+	back_btn.pressed.connect(show_training_mode)
+	location_list.add_child(back_btn)
+
+func enter_location(location: LocationData):
+	"""進入地點，顯示子地點列表"""
+	location_manager.enter_location(location)
+	mode_label.text = location.location_name
+	
+	var sub_locations = location_manager.get_available_sub_locations()
+	if sub_locations.is_empty():
+		mode_label.text = location.location_name + " - 暫無可用場所"
+		return
+	
+	# 顯示子地點選擇
+	var location_text = $UI/LocationPanel/LocationText
+	location_text.text = location.description
+	
+	var location_list = $UI/LocationPanel/LocationList
+	
+	# 清空現有按鈕
+	for child in location_list.get_children():
+		child.queue_free()
+	
+	# 創建子地點按鈕
+	for sub_loc in sub_locations:
+		var btn = Button.new()
+		btn.text = sub_loc.sub_location_name
+		btn.pressed.connect(func(): enter_sub_location(sub_loc))
+		location_list.add_child(btn)
+	
+	# 添加返回按鈕
+	var back_btn = Button.new()
+	back_btn.text = "離開"
+	back_btn.pressed.connect(show_location_selection)
+	location_list.add_child(back_btn)
+
+func enter_sub_location(sub_location: SubLocation):
+	"""進入子地點，顯示動作列表"""
+	location_manager.enter_sub_location(sub_location)
+	mode_label.text = location_manager.current_location.location_name + " - " + sub_location.sub_location_name
+	
+	var actions = location_manager.get_available_actions()
+	
+	# 顯示子地點描述和動作
+	var location_text = $UI/LocationPanel/LocationText
+	location_text.text = sub_location.description
+	
+	var location_list = $UI/LocationPanel/LocationList
+	
+	# 清空現有按鈕
+	for child in location_list.get_children():
+		child.queue_free()
+	
+	# 創建動作按鈕
+	for action in actions:
+		var btn = Button.new()
+		btn.text = location_manager.get_action_display_text(action)
+		btn.disabled = not location_manager.is_action_available(action)
+		btn.pressed.connect(func(): execute_location_action(action))
+		location_list.add_child(btn)
+	
+	# 添加返回按鈕
+	var back_btn = Button.new()
+	back_btn.text = "離開"
+	back_btn.pressed.connect(func(): enter_location(location_manager.current_location))
+	location_list.add_child(back_btn)
+
+func execute_location_action(action: LocationAction):
+	"""執行地點動作"""
+	if location_manager.execute_action(action):
+		# 動作執行成功，事件會自動觸發
+		pass
+
+func _on_location_action_executed(action: LocationAction):
+	"""處理動作執行後的回調"""
+	print("執行動作：", action.action_name)
+
+func start_event_sequence(event_ids: Array[String]):
+	"""開始事件序列"""
+	event_sequence = event_ids
+	event_sequence_index = 0
+	trigger_next_event_in_sequence()
+
+func trigger_next_event_in_sequence():
+	"""觸發事件序列中的下一個事件"""
+	if event_sequence_index >= event_sequence.size():
+		# 序列結束
+		event_sequence.clear()
+		event_sequence_index = 0
+		show_training_mode()
+		return
+	
+	var event_id = event_sequence[event_sequence_index]
+	var event = event_manager.get_event_by_id(event_id)
+	if event:
+		event_manager.trigger_event(event)
+		show_event()
+	else:
+		# 事件不存在，跳過
+		event_sequence_index += 1
+		trigger_next_event_in_sequence()
+
+func on_event_sequence_step_completed():
+	"""事件序列中的一個事件完成"""
+	event_sequence_index += 1
+	if event_sequence_index < event_sequence.size():
+		# 還有下一個事件
+		trigger_next_event_in_sequence()
+	else:
+		# 序列結束
+		event_sequence.clear()
+		event_sequence_index = 0
 
 func _on_trigger_event_pressed():
 	var event = event_manager.trigger_random_event()
@@ -168,7 +326,12 @@ func show_event():
 				# 事件結束
 				event_state_machine.complete_event()
 				advance_day()
-				show_training_mode()
+				
+				# 檢查是否在事件序列中
+				if not event_sequence.is_empty():
+					on_event_sequence_step_completed()
+				else:
+					show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	else:

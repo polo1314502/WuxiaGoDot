@@ -154,6 +154,13 @@ func complete_event():
 		event_completed.emit(current_event.event_id)
 	current_event = null
 	current_step_index = 0
+
+## 根據 event_id 獲取事件
+func get_event_by_id(event_id: String) -> EventData:
+	for event in available_events:
+		if event.event_id == event_id:
+			return event
+	return null
 	
 func _scan_directory(path: String):
 	var dir = DirAccess.open(path)

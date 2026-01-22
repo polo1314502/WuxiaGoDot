@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/event_data.gd" id="1"]
+
+[sub_resource type="Resource" id="1"]
+script = preload("res://scripts/action_trigger_battle.gd")
+battle_params = {
+	"enemy_id": "enemy_bully"
+}
+
+[sub_resource type="Resource" id="2"]
+script = preload("res://scripts/event_choice.gd")
+choice_text = "出手教訓他"
+next_step = -1
+actions = Array[Resource]([SubResource("1")])
+
+[sub_resource type="Resource" id="3"]
+script = preload("res://scripts/action_change_stats.gd")
+changes = {
+	"reputation": 5
+}
+
+[sub_resource type="Resource" id="4"]
+script = preload("res://scripts/event_choice.gd")
+choice_text = "扶他回房休息"
+next_step = 1
+actions = Array[Resource]([SubResource("3")])
+
+[sub_resource type="Resource" id="5"]
+script = preload("res://scripts/event_choice.gd")
+choice_text = "悄悄離開"
+next_step = -1
+actions = Array[Resource]([])
+
+[sub_resource type="Resource" id="6"]
+script = preload("res://scripts/event_step.gd")
+text = "醉漢向你走來，看樣子是要找你的麻煩。你該如何應對？"
+choices = Array[Resource]([SubResource("2"), SubResource("4"), SubResource("5")])
+
+[sub_resource type="Resource" id="7"]
+script = preload("res://scripts/action_change_stats.gd")
+changes = {
+	"attack": 2,
+	"reputation": 3
+}
+
+[sub_resource type="Resource" id="8"]
+script = preload("res://scripts/event_choice.gd")
+choice_text = "收下"
+next_step = -1
+actions = Array[Resource]([SubResource("7")])
+
+[sub_resource type="Resource" id="9"]
+script = preload("res://scripts/event_step.gd")
+text = "醉漢清醒後，感激你的幫助。他說他其實是一位武林前輩，願意傳授你一些武功心得。\n\n你的攻擊力+2，聲望+3！"
+choices = Array[Resource]([SubResource("8")])
+
+[resource]
+script = ExtResource("1")
+event_id = "inn_fight_or_help"
+title = "如何應對"
+steps = Array[Resource]([SubResource("6"), SubResource("9")])
+trigger_conditions = Array[Resource]([])
+prerequisites = []
+can_repeat = true
+priority = 0

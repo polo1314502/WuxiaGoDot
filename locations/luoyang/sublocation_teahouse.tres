@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SubLocation" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/sub_location.gd" id="1"]
+[ext_resource type="Resource" path="res://locations/luoyang/teahouse/action_gather_info.tres" id="2"]
+[ext_resource type="Resource" path="res://locations/luoyang/teahouse/action_duel.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+sub_location_id = "teahouse"
+sub_location_name = "茶館"
+description = "人聲鼎沸的茶館，各種江湖消息在此流通。茶香四溢，說書先生正在講述江湖傳奇。"
+available_conditions = Array[Resource]([])
+actions = Array[Resource]([ExtResource("2"), ExtResource("3")])
+illustration_path = ""
