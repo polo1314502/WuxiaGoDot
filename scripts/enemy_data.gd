@@ -8,6 +8,7 @@ extends Resource
 
 # 基礎屬性
 @export var max_hp: int = 100
+@export var max_mp: int = 50  # 新增：敵人內力值
 @export var attack: int = 10
 @export var defense: int = 5
 @export var speed: int = 10
@@ -29,6 +30,8 @@ func create_battle_instance() -> Dictionary:
 		"name": name,
 		"hp": max_hp,
 		"max_hp": max_hp,
+		"mp": max_mp,  # 新增
+		"max_mp": max_mp,  # 新增
 		"attack": attack,
 		"defense": defense,
 		"speed": speed,

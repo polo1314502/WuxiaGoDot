@@ -13,7 +13,7 @@ action_params = {
 "enemy_defense": 12,
 "enemy_hp": 100,
 "enemy_name": "江湖武者",
-"enemy_skills": ["敵人普通攻擊", "敵人重擊", "敵人連擊"],
+"enemy_skills": ["普通攻擊", "重擊", "連擊"],
 "enemy_speed": 14,
 "max_hp": 0,
 "message": "一位武者向你發起挑戰！",
