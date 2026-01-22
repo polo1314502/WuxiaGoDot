@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=3 format=3 uid="uid://bwhdtjsjyhwwc"]
+
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="1"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_wxk2i"]
+
+[resource]
+script = ExtResource("1")
+text = "你加入天驕門"

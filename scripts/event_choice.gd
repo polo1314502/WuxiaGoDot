@@ -3,7 +3,7 @@ class_name EventChoice
 extends Resource
 
 @export var text: String = ""
-@export_enum("change_stats", "trigger_battle", "buy_item") var action_type: String = ""
+@export_enum("change_stats", "trigger_battle", "buy_item", "learn_skill") var action_type: String = ""
 @export var action_params: Dictionary = {
 	"attack": 0,
 	"defense": 0,
@@ -12,6 +12,8 @@ extends Resource
 	"money" : 0,
 	"reputation": 0,
 	"training_points": 0,
+	"skill_id": "",
+	"skill_name": "",
 	"message": ""
 }
 @export var enemy_data: EnemyData  # 直接使用 EnemyData 資源（包含技能列表）

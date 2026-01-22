@@ -340,18 +340,25 @@ func show_event():
 				show_event()
 			else:
 				# 事件結束
+				# 先檢查force_training_mode（在complete_event之前）
+				var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 				event_state_machine.complete_event()
 				
 				# 檢查是否在事件序列中
 				if not event_sequence.is_empty():
 					on_event_sequence_step_completed()
 				else:
-					# 根據觸發來源返回相應模式
-					if event_triggered_from_location:
-						return_to_location_mode()
-					else:
+					# 檢查是否強制進入養成模式
+					if should_force_training:
 						advance_day()
 						show_training_mode()
+					else:
+						# 根據觸發來源返回相應模式
+						if event_triggered_from_location:
+							return_to_location_mode()
+						else:
+							advance_day()
+							show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	else:
@@ -394,26 +401,38 @@ func _on_event_result_ready(result_text: String):
 			
 			if should_end:
 				# 立即結束事件
+				# 先檢查force_training_mode（在complete_event之前）
+				var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 				event_state_machine.complete_event()
 				advance_day()
-				# 根據觸發來源返回相應模式
-				if event_triggered_from_location:
-					return_to_location_mode()
-				else:
+				# 檢查是否強制進入養成模式
+				if should_force_training:
 					show_training_mode()
+				else:
+					# 根據觸發來源返回相應模式
+					if event_triggered_from_location:
+						return_to_location_mode()
+					else:
+						show_training_mode()
 			elif event_manager.has_next_step():
 				# 繼續到下一步
 				event_manager.next_step()
 				show_event()
 			else:
 				# 沒有下一步了，結束事件
+				# 先檢查force_training_mode（在complete_event之前）
+				var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 				event_state_machine.complete_event()
 				advance_day()
-				# 根據觸發來源返回相應模式
-				if event_triggered_from_location:
-					return_to_location_mode()
-				else:
+				# 檢查是否強制進入養成模式
+				if should_force_training:
 					show_training_mode()
+				else:
+					# 根據觸發來源返回相應模式
+					if event_triggered_from_location:
+						return_to_location_mode()
+					else:
+						show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	
@@ -586,27 +605,39 @@ func check_battle_end():
 			show_event()
 		else:
 			# 沒有後續事件，正常結束
+			# 先檢查force_training_mode（在complete_event之前）
+			var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 			event_state_machine.complete_event()
 			advance_day()
-			# 根據觸發來源返回相應模式
-			if event_triggered_from_location:
-				return_to_location_mode()
-			else:
+			# 檢查是否強制進入養成模式
+			if should_force_training:
 				show_training_mode()
+			else:
+				# 根據觸發來源返回相應模式
+				if event_triggered_from_location:
+					return_to_location_mode()
+				else:
+					show_training_mode()
 			
 	elif player_data.hp <= 0:
 		add_battle_log("你被擊敗了...")
 		player_data.hp = 0
 		
 		# 戰敗也結束事件
+		# 先檢查force_training_mode（在complete_event之前）
+		var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 		event_state_machine.complete_event()
 		await get_tree().create_timer(2.0).timeout
 		advance_day()
-		# 根據觸發來源返回相應模式
-		if event_triggered_from_location:
-			return_to_location_mode()
-		else:
+		# 檢查是否強制進入養成模式
+		if should_force_training:
 			show_training_mode()
+		else:
+			# 根據觸發來源返回相應模式
+			if event_triggered_from_location:
+				return_to_location_mode()
+			else:
+				show_training_mode()
 
 func level_up():
 	player_data.level += 1

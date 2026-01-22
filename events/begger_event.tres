@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3 uid="uid://b0e2c261b4444"]
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3 uid="uid://b0e2c261b4444"]
 
 [ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_vildr"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_vildr"]
 [ext_resource type="Resource" uid="uid://kdnxtde3fqdf" path="res://events/begger/begger_event_steps.tres" id="2_yanie"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="4_p058e"]
 
 [resource]
 script = ExtResource("1_vildr")

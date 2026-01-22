@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LocationAction" load_steps=2 format=3 uid="uid://action_meet_master"]
+
+[ext_resource type="Script" path="res://scripts/location_action.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+action_id = "meet_master"
+action_name = "與角落的老者交談"
+description = "茶館角落有位氣質不凡的老者，似乎想和你說些什麼..."
+trigger_event_id = "master_teaching"
+repeatable = false
+cooldown_days = 0

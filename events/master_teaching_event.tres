@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3 uid="uid://cytpper130nwv"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1"]
+[ext_resource type="Resource" uid="uid://bbhg3irxcabmf" path="res://events/master_teaching/step1_meet_master.tres" id="2"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_p8maf"]
+[ext_resource type="Resource" uid="uid://bwhdtjsjyhwwc" path="res://events/master_teaching/step2_learning.tres" id="3"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="5_c6fr0"]
+
+[resource]
+script = ExtResource("1")
+event_id = "master_teaching"
+title = "拜師學藝"
+steps = Array[ExtResource("2_p8maf")]([ExtResource("2"), ExtResource("3")])
+force_training_mode = true

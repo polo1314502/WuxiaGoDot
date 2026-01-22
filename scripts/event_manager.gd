@@ -59,12 +59,6 @@ func can_trigger_event(event: EventData) -> bool:
 		if event_history.has(event.event_id) and event_history[event.event_id].size() > 0:
 			return false
 	
-	# 檢查前置條件
-	for prereq in event.prerequisites:
-		if prereq is EventCondition:
-			if not prereq.check(main_scene):
-				return false
-	
 	# 檢查觸發條件
 	if event.trigger_conditions.is_empty():
 		return true  # 沒有觸發條件，總是可觸發
