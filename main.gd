@@ -18,7 +18,7 @@ var player_data = {
 	"speed": 12,
 	"money": 100,
 	"reputation": 0,
-	"skills": ["普通攻擊", "連擊"], # 技能ID列表
+	"skills": ["普通攻擊"], # 技能ID列表
 	"training_points": 10
 }
 
@@ -257,7 +257,7 @@ func _on_start_battle_pressed():
 		start_battle_with_enemy(enemy)
 	else:
 		# 如果找不到敵人資源，使用舊方法
-		start_battle("山賊", 80, 12, 8, 10, ["敵人普通攻擊", "敵人重擊"])
+		start_battle("山賊", 80, 12, 8, 10, ["普通攻擊", "重擊"])
 
 # 使用 EnemyData 創建戰鬥
 func start_battle_with_enemy(enemy: EnemyData):
@@ -353,7 +353,8 @@ func enemy_turn():
 			var skill = skill_manager.get_skill_by_id(skill_id)
 			
 			if skill:
-				var executor = EnemySkillExecutor.new(self, skill)
+				# 使用統一的 SkillExecutor，傳入 enemy_mode = true
+				var executor = SkillExecutor.new(self, skill, true)
 				if executor.can_execute():
 					executor.execute()
 					for log in executor.get_logs():
@@ -433,12 +434,16 @@ func update_stats_display():
 	]
 
 func update_battle_display():
+	var enemy_mp_text = ""
+	if enemy_data.has("mp") and enemy_data.has("max_mp"):
+		enemy_mp_text = " | MP: %d/%d" % [enemy_data.mp, enemy_data.max_mp]
+	
 	var battle_info = """
 	=== 戰鬥中 ===
 	【我方】%s 
 	  HP: %d/%d | MP: %d/%d
 	【敵方】%s 
-	  HP: %d/%d
+	  HP: %d/%d%s
 	
 	當前回合: %s
 	
@@ -450,6 +455,7 @@ func update_battle_display():
 		player_data.mp, player_data.max_mp,
 		enemy_data.name, 
 		enemy_data.hp, enemy_data.max_hp,
+		enemy_mp_text,
 		"玩家" if battle_turn == "player" else "敵人",
 		"\n".join(battle_log.slice(-6))
 	]

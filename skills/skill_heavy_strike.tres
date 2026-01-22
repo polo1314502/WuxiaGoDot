@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bdqyn7i3pr044" path="res://scripts/skill_effect.gd" id="1_jnjyo"]
 [ext_resource type="Script" uid="uid://cxn8oyoo20uc6" path="res://scripts/skill_data.gd" id="1_skill"]
-[ext_resource type="Resource" uid="uid://edfow8nb8kn" path="res://skills/enemy_effect_heavy_strike.tres" id="2_effect"]
+[ext_resource type="Resource" uid="uid://edfow8nb8kn" path="res://skills/effect_heavy_strike.tres" id="2_effect"]
 
 [resource]
 script = ExtResource("1_skill")
-skill_id = "敵人重擊"
+skill_id = "重擊"
 name = "重擊"
-description = "敵人的重擊，忽視50%防禦"
+description = "強力的一擊，忽視50%防禦"
+mp_cost = 15
 damage_multiplier = 1.5
 effects = Array[ExtResource("1_jnjyo")]([ExtResource("2_effect")])
