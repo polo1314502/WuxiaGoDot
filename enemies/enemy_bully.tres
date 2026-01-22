@@ -2,14 +2,15 @@
 
 [ext_resource type="Script" uid="uid://2dso3g34gyma" path="res://scripts/enemy_data.gd" id="1_enemy"]
 [ext_resource type="Script" uid="uid://cxn8oyoo20uc6" path="res://scripts/skill_data.gd" id="2_crcv8"]
-[ext_resource type="Resource" uid="uid://cf5dxl3oh3un5" path="res://skills/enemy_skill_basic_attack.tres" id="2_skill1"]
+[ext_resource type="Resource" uid="uid://cf5dxl3oh3un5" path="res://skills/skill_basic_attack.tres" id="2_skill1"]
 
 [resource]
 script = ExtResource("1_enemy")
 enemy_id = "惡霸"
 name = "惡霸"
-description = "橫行鄉里的惡霸，只會些粗淺的拳腳功夫"
+description = "橫行鄉裡的惡霸，只會些粗淺的拳腳功夫"
 max_hp = 60
+max_mp = 30
 defense = 6
 speed = 8
 skills = Array[ExtResource("2_crcv8")]([ExtResource("2_skill1")])
