@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="SubLocation" load_steps=6 format=3 uid="uid://v6h6a0t07d3a"]
+[gd_resource type="Resource" script_class="SubLocation" load_steps=5 format=3 uid="uid://v6h6a0t07d3a"]
 
 [ext_resource type="Script" uid="uid://bsjopm7pdfaog" path="res://scripts/sub_location.gd" id="1"]
 [ext_resource type="Script" uid="uid://cjk2bbg3to3yl" path="res://scripts/location_action.gd" id="1_t2lti"]
-[ext_resource type="Resource" uid="uid://cqyrp4i678qk6" path="res://locations/luoyang/teahouse/action_duel.tres" id="3"]
 [ext_resource type="Resource" path="res://locations/luoyang/teahouse/action_meet_master.tres" id="3_t2lti"]
 [ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="4_1seg7"]
 
@@ -11,4 +10,4 @@ script = ExtResource("1")
 sub_location_id = "teahouse"
 sub_location_name = "茶館"
 description = "人聲鼎沸的茶館，各種江湖消息在此流通。茶香四溢，說書先生正在講述江湖傳奇。"
-actions = Array[ExtResource("1_t2lti")]([ExtResource("3"), ExtResource("3_t2lti")])
+actions = Array[ExtResource("1_t2lti")]([ExtResource("3_t2lti")])

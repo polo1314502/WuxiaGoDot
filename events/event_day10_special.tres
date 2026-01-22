@@ -13,4 +13,5 @@ title = "師父召見"
 steps = Array[ExtResource("2_83mbk")]([ExtResource("3_fxmmc")])
 trigger_conditions = Array[ExtResource("3_1bl8n")]([ExtResource("4_83mbk")])
 priority = 10
+force_training_mode = true
 metadata/_custom_type_script = "uid://qx7n1yhiw8ee"

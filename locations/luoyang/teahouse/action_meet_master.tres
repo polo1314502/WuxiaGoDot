@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="LocationAction" load_steps=2 format=3 uid="uid://action_meet_master"]
+[gd_resource type="Resource" script_class="LocationAction" load_steps=4 format=3 uid="uid://lk4a5mx60rf2"]
 
-[ext_resource type="Script" path="res://scripts/location_action.gd" id="1"]
+[ext_resource type="Script" uid="uid://cjk2bbg3to3yl" path="res://scripts/location_action.gd" id="1"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_kcthq"]
+[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_day_0.tres" id="2_p4rej"]
 
 [resource]
 script = ExtResource("1")
 action_id = "meet_master"
 action_name = "與角落的老者交談"
 description = "茶館角落有位氣質不凡的老者，似乎想和你說些什麼..."
+available_conditions = Array[ExtResource("1_kcthq")]([ExtResource("2_p4rej")])
 trigger_event_id = "master_teaching"
-repeatable = false
-cooldown_days = 0

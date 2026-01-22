@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EventCondition" load_steps=2 format=3 uid="uid://baa6vg2u8ixw3"]
+
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_nwfup"]
+
+[resource]
+script = ExtResource("1_nwfup")
+condition_type = "day_equals"
+condition_params = {
+&"day": 0
+}
+metadata/_custom_type_script = "uid://chgvwbk24dcuu"

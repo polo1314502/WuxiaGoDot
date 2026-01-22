@@ -4,11 +4,12 @@ extends Node
 
 const SAVE_PATH = "res://savegame.tres"
 
-func save_game(player_data: Dictionary, event_history: Dictionary, days_passed: int) -> bool:
+func save_game(player_data: Dictionary, event_history: Dictionary, days_passed: int, current_mode: String = "training") -> bool:
 	var save_data = {
 		"player_data": player_data.duplicate(),
 		"event_history": event_history.duplicate(true),
 		"days_passed": days_passed,
+		"current_mode": current_mode,
 		"timestamp": Time.get_datetime_dict_from_system()
 	}
 	

@@ -47,6 +47,7 @@ var current_action_result = null  # 新增：儲存當前動作結果
 var event_sequence: Array[String] = []  # 事件序列
 var event_sequence_index: int = 0  # 當前事件序列索引
 var event_triggered_from_location: bool = false  # 記錄事件是否從場景模式觸發
+var current_mode: String = "location"  # 當前模式："training" 或 "location"
 
 func _ready():
 	# 初始化系統
@@ -72,17 +73,24 @@ func _ready():
 	location_manager.action_executed.connect(_on_location_action_executed)
 	
 	# 嘗試讀取存檔
+	var saved_mode = "location"  # 默認場景模式
 	if save_manager.has_save():
 		var save_data = save_manager.load_game()
 		if not save_data.is_empty():
 			player_data = save_data.player_data
 			event_manager.event_history = save_data.event_history
 			days_passed = save_data.days_passed
+			saved_mode = save_data.get("current_mode", "location")
 	
-	show_training_mode()
+	# 根據存檔的模式開始遊戲
+	if saved_mode == "training":
+		show_training_mode()
+	else:
+		show_location_selection()
 	update_stats_display()
 
 func show_training_mode():
+	current_mode = "training"
 	in_battle = false
 	if player_data.hp == 0:
 		player_data.hp = 1
@@ -126,6 +134,7 @@ func _on_train_hp_pressed():
 
 func _on_rest_pressed():
 	player_data.hp = player_data.max_hp
+	player_data.mp = player_data.max_mp
 	player_data.training_points += 5
 	advance_day()
 
@@ -141,6 +150,7 @@ func _on_explore_locations_pressed():
 
 func show_location_selection():
 	"""顯示場景選擇UI"""
+	current_mode = "location"
 	mode_label.text = "選擇地點"
 	stats_label.visible = false
 	training_panel.visible = false
@@ -167,10 +177,11 @@ func update_location_list(locations: Array[LocationData]):
 		location_list.add_child(btn)
 	
 	# 添加返回按鈕
-	var back_btn = Button.new()
-	back_btn.text = "返回"
-	back_btn.pressed.connect(show_training_mode)
-	location_list.add_child(back_btn)
+	if days_passed > 0:
+		var back_btn = Button.new()
+		back_btn.text = "返回"
+		back_btn.pressed.connect(show_training_mode)
+		location_list.add_child(back_btn)
 
 func enter_location(location: LocationData):
 	"""進入地點，顯示子地點列表"""
@@ -287,7 +298,7 @@ func on_event_sequence_step_completed():
 		event_sequence_index = 0
 
 func _on_save_game_pressed():
-	if save_manager.save_game(player_data, event_manager.event_history, days_passed):
+	if save_manager.save_game(player_data, event_manager.event_history, days_passed, current_mode):
 		mode_label.text = "遊戲已保存！"
 
 func advance_day():
@@ -296,7 +307,7 @@ func advance_day():
 	update_stats_display()
 	
 	# 自動保存
-	save_manager.save_game(player_data, event_manager.event_history, days_passed)
+	save_manager.save_game(player_data, event_manager.event_history, days_passed, current_mode)
 	
 	# 檢查是否有自動觸發的事件
 	var auto_event = event_manager.check_auto_trigger_events()
@@ -643,6 +654,7 @@ func level_up():
 	player_data.level += 1
 	player_data.max_hp += 20
 	player_data.hp = player_data.max_hp
+	player_data.mp = player_data.max_mp
 	player_data.attack += 3
 	player_data.defense += 2
 	add_battle_log("升級了！等級提升至 %d" % player_data.level)
@@ -650,7 +662,7 @@ func level_up():
 func update_stats_display():
 	stats_label.text = """
 	%s Lv.%d (經驗: %d/%d)
-	生命: %d/%d
+	生命: %d/%d | 內力: %d/%d
 	攻擊: %d | 防禦: %d | 速度: %d
 	銀兩: %d | 聲望: %d
 	修煉點數: %d
@@ -658,6 +670,7 @@ func update_stats_display():
 		player_data.name, player_data.level,
 		player_data.exp, player_data.level * 100,
 		player_data.hp, player_data.max_hp,
+		player_data.mp, player_data.max_mp,
 		player_data.attack, player_data.defense, player_data.speed,
 		player_data.money, player_data.reputation,
 		player_data.training_points
@@ -666,12 +679,12 @@ func update_stats_display():
 func update_battle_display():
 	var enemy_mp_text = ""
 	if enemy_data.has("mp") and enemy_data.has("max_mp"):
-		enemy_mp_text = " | MP: %d/%d" % [enemy_data.mp, enemy_data.max_mp]
+		enemy_mp_text = " | 內力%d/%d" % [enemy_data.mp, enemy_data.max_mp]
 	
 	var battle_info = """
 	=== 戰鬥中 ===
 	【我方】%s 
-	  HP: %d/%d | MP: %d/%d
+	  HP: %d/%d | 內力%d/%d
 	【敵方】%s 
 	  HP: %d/%d%s
 	
