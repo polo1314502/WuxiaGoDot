@@ -29,7 +29,7 @@ var days_passed = 0
 @onready var battle_panel = $UI/BattlePanel
 @onready var event_panel = $UI/EventPanel
 @onready var stats_label = $UI/StatsLabel
-@onready var location_panel = $UI/LocationPanel
+@onready var location_mode = $UI/LocationMode
 
 var in_battle = false
 var enemy_data = {}
@@ -72,6 +72,11 @@ func _ready():
 	location_manager.load_locations_from_directory()
 	location_manager.action_executed.connect(_on_location_action_executed)
 	
+	# 初始化 LocationMode
+	location_mode.initialize(self, location_manager, player_data)
+	location_mode.return_to_training_requested.connect(show_training_mode)
+	location_mode.action_executed.connect(_on_location_action_executed)
+	
 	# 嘗試讀取存檔
 	var saved_mode = "location"  # 默認場景模式
 	if save_manager.has_save():
@@ -99,19 +104,16 @@ func show_training_mode():
 	training_panel.visible = true
 	battle_panel.visible = false
 	event_panel.visible = false
-	location_panel.visible = false  # 添加這一行
+	location_mode.visible = false
 	update_stats_display()
 
 func return_to_location_mode():
 	event_panel.visible = false
 	battle_panel.visible = false
-	location_panel.visible = true
-	if location_manager.current_sub_location or location_manager.current_location:
-		# 如果在主地點或子地點，返回主地點界面
-		enter_location(location_manager.current_location)
-	else:
-		# 都不在，返回地點選擇
-		show_location_selection()
+	location_mode.visible = true
+	stats_label.visible = false
+	# 返回當前視圖
+	location_mode.return_to_current_view()
 
 func _on_train_attack_pressed():
 	if player_data.training_points > 0:
@@ -156,102 +158,10 @@ func show_location_selection():
 	training_panel.visible = false
 	battle_panel.visible = false
 	event_panel.visible = false
-	location_panel.visible = true
+	location_mode.visible = true
 	
-	var available_locations = location_manager.get_available_locations()
-	update_location_list(available_locations)
-
-func update_location_list(locations: Array[LocationData]):
-	"""更新地點列表"""
-	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
-	
-	# 清空現有按鈕
-	for child in location_list.get_children():
-		child.queue_free()
-	
-	# 創建地點按鈕
-	for location in locations:
-		var btn = Button.new()
-		btn.text = location.location_name
-		btn.pressed.connect(func(): enter_location(location))
-		location_list.add_child(btn)
-	
-	# 添加返回按鈕
-	if days_passed > 0:
-		var back_btn = Button.new()
-		back_btn.text = "返回"
-		back_btn.pressed.connect(show_training_mode)
-		location_list.add_child(back_btn)
-
-func enter_location(location: LocationData):
-	"""進入地點，顯示子地點列表"""
-	location_manager.enter_location(location)
-	mode_label.text = location.location_name
-	
-	var sub_locations = location_manager.get_available_sub_locations()
-	if sub_locations.is_empty():
-		mode_label.text = location.location_name + " - 暫無可用場所"
-		return
-	
-	# 顯示子地點選擇
-	var location_text = $UI/LocationPanel/VBoxContainer/LocationText
-	location_text.text = "\n" + location.description
-	
-	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
-	
-	# 清空現有按鈕
-	for child in location_list.get_children():
-		child.queue_free()
-	
-	# 創建子地點按鈕
-	for sub_loc in sub_locations:
-		var btn = Button.new()
-		btn.text = sub_loc.sub_location_name
-		btn.pressed.connect(func(): enter_sub_location(sub_loc))
-		location_list.add_child(btn)
-	
-	# 添加返回按鈕
-	var back_btn = Button.new()
-	back_btn.text = "離開"
-	back_btn.pressed.connect(show_location_selection)
-	location_list.add_child(back_btn)
-
-func enter_sub_location(sub_location: SubLocation):
-	"""進入子地點，顯示動作列表"""
-	location_manager.enter_sub_location(sub_location)
-	mode_label.text = location_manager.current_location.location_name + " - " + sub_location.sub_location_name
-	
-	var actions = location_manager.get_available_actions()
-	
-	# 顯示子地點描述和動作
-	var location_text = $UI/LocationPanel/VBoxContainer/LocationText
-	location_text.text = "\n" + sub_location.description
-	
-	var location_list = $UI/LocationPanel/VBoxContainer/LocationList
-	
-	# 清空現有按鈕
-	for child in location_list.get_children():
-		child.queue_free()
-	
-	# 創建動作按鈕
-	for action in actions:
-		var btn = Button.new()
-		btn.text = location_manager.get_action_display_text(action)
-		btn.disabled = not location_manager.is_action_available(action)
-		btn.pressed.connect(func(): execute_location_action(action))
-		location_list.add_child(btn)
-	
-	# 添加返回按鈕
-	var back_btn = Button.new()
-	back_btn.text = "離開"
-	back_btn.pressed.connect(func(): enter_location(location_manager.current_location))
-	location_list.add_child(back_btn)
-
-func execute_location_action(action: LocationAction):
-	"""執行地點動作"""
-	if location_manager.execute_action(action):
-		# 動作執行成功，事件會自動觸發
-		pass
+	# 委託給 LocationMode 處理
+	location_mode.show_location_selection()
 
 func _on_location_action_executed(action: LocationAction):
 	"""處理動作執行後的回調"""
@@ -329,7 +239,7 @@ func show_event():
 	mode_label.text = "事件：" + event_manager.current_event.title
 	training_panel.visible = false
 	battle_panel.visible = false
-	location_panel.visible = false
+	location_mode.visible = false
 	event_panel.visible = true
 	
 	$UI/EventPanel/EventText.text = step.text
@@ -472,6 +382,8 @@ func _on_battle_triggered(battle_params: Dictionary):
 
 # === 戰鬥系統 ===
 func _on_start_battle_pressed():
+	# 從養成模式觸發的戰鬥，確保戰鬥後返回養成模式
+	event_triggered_from_location = false
 	# 測試：使用敵人ID創建戰鬥
 	var enemy = enemy_manager.get_enemy_by_id("山賊")
 	if enemy:
