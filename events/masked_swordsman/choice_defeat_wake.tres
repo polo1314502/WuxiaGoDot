@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/event_choice.gd" id="1_choice"]
+
+[resource]
+script = ExtResource("1_choice")
+text = "收拾心情，繼續前行"
+action_type = "change_stats"
+action_params = {
+"attack": 0,
+"defense": 0,
+"max_hp": 20,
+"message": "你使用了藥材療傷，恢復了部分元氣。生命上限+20，獲得50銀兩，但這次失敗讓你深感挫折。",
+"money": 50,
+"reputation": -5,
+"skill_id": "",
+"skill_name": "",
+"speed": 0,
+"training_points": 3
+}
+enemy_data = null
+end_event = true
+on_victory_event_id = ""
+on_defeat_event_id = ""

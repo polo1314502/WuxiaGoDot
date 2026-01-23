@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://hypf3wliu6up"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_i3sh7"]
+
+[resource]
+script = ExtResource("1_i3sh7")
+text = "收下秘笈"
+action_type = "change_stats"
+action_params = {
+"attack": 5,
+"defense": 3,
+"max_hp": 0,
+"message": "你獲得了劍法秘笈的指導",
+"money": 0,
+"reputation": 10,
+"skill_id": "",
+"skill_name": "",
+"speed": 0,
+"training_points": 0
+}
+end_event = true

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=8 format=3 uid="uid://vntwqv50wybq"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_d6a5b"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_is15u"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_c8425"]
+[ext_resource type="Resource" uid="uid://c0y1mrtt6ss2u" path="res://events/masked_swordsman/choice_battle.tres" id="4_xhrcv"]
+[ext_resource type="Resource" path="res://events/masked_swordsman/choice_flee.tres" id="5_wk026"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="6_vg7a5"]
+
+[sub_resource type="Resource" id="step_1"]
+script = ExtResource("2_is15u")
+text = "你在山間小路上遇到了一個神秘的蒙面劍客。他擋住了你的去路。
+蒙面劍客：「你就是最近名聲大噪的武者？讓我試試你的本事！」"
+choices = Array[ExtResource("3_c8425")]([ExtResource("4_xhrcv"), ExtResource("5_wk026")])
+
+[resource]
+script = ExtResource("1_d6a5b")
+event_id = "example_battle_with_outcomes"
+title = "蒙面劍客的挑戰"
+steps = Array[ExtResource("2_is15u")]([SubResource("step_1")])

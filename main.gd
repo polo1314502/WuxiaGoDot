@@ -35,6 +35,8 @@ var in_battle = false
 var enemy_data = {}
 var battle_turn = "player"
 var battle_log = []
+var current_battle_victory_event_id: String = ""  # 當前戰鬥勝利後事件ID
+var current_battle_defeat_event_id: String = ""   # 當前戰鬥失敗後事件ID
 
 # 新系統
 var event_manager: EventManager
@@ -366,6 +368,10 @@ func _on_battle_triggered(battle_params: Dictionary):
 	# 縮短等待時間，讓玩家可以更快看到戰鬥文字後進入戰鬥
 	await get_tree().create_timer(0.5).timeout
 	
+	# 保存戰鬥後續事件ID
+	current_battle_victory_event_id = battle_params.get("on_victory_event_id", "")
+	current_battle_defeat_event_id = battle_params.get("on_defeat_event_id", "")
+	
 	# 檢查是否使用 EnemyData 資源
 	if battle_params.has("enemy_data") and battle_params.enemy_data is EnemyData:
 		start_battle_with_enemy(battle_params.enemy_data)
@@ -520,7 +526,21 @@ func check_battle_end():
 		
 		await get_tree().create_timer(2.0).timeout
 		
-		# 檢查戰鬥後是否還有後續事件
+		# 檢查是否有戰勝後續事件
+		if current_battle_victory_event_id != "":
+			var victory_event = event_manager.get_event_by_id(current_battle_victory_event_id)
+			if victory_event:
+				# 清空後續事件ID
+				current_battle_victory_event_id = ""
+				current_battle_defeat_event_id = ""
+				# 結束當前事件並觸發勝利事件
+				event_state_machine.complete_event()
+				advance_day()
+				event_manager.trigger_event(victory_event)
+				show_event()
+				return
+		
+		# 檢查戰鬥後是否還有後續事件（舊系統，兼容性）
 		if event_manager.current_event and event_manager.has_next_step():
 			# 有後續事件，繼續顯示
 			event_manager.next_step()
@@ -546,11 +566,26 @@ func check_battle_end():
 		add_battle_log("你被擊敗了...")
 		player_data.hp = 0
 		
-		# 戰敗也結束事件
+		await get_tree().create_timer(2.0).timeout
+		
+		# 檢查是否有戰敗後續事件
+		if current_battle_defeat_event_id != "":
+			var defeat_event = event_manager.get_event_by_id(current_battle_defeat_event_id)
+			if defeat_event:
+				# 清空後續事件ID
+				current_battle_victory_event_id = ""
+				current_battle_defeat_event_id = ""
+				# 結束當前事件並觸發戰敗事件
+				event_state_machine.complete_event()
+				advance_day()
+				event_manager.trigger_event(defeat_event)
+				show_event()
+				return
+		
+		# 戰敗也結束事件（舊系統，兼容性）
 		# 先檢查force_training_mode（在complete_event之前）
 		var should_force_training = event_manager.current_event and event_manager.current_event.force_training_mode
 		event_state_machine.complete_event()
-		await get_tree().create_timer(2.0).timeout
 		advance_day()
 		# 檢查是否強制進入養成模式
 		if should_force_training:

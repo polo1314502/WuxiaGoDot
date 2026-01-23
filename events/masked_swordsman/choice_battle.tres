@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=3 format=3 uid="uid://c0y1mrtt6ss2u"]
+
+[ext_resource type="Resource" path="res://enemies/enemy_warrior.tres" id="1_24eac"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="2_3teov"]
+
+[resource]
+script = ExtResource("2_3teov")
+text = "接受挑戰"
+action_type = "trigger_battle"
+action_params = {
+"attack": 0,
+"defense": 0,
+"max_hp": 0,
+"message": "蒙面劍客拔劍而出，你們開始了一場激烈的對決！",
+"money": 0,
+"reputation": 0,
+"skill_id": "",
+"skill_name": "",
+"speed": 0,
+"training_points": 0
+}
+enemy_data = ExtResource("1_24eac")
+on_victory_event_id = "battle_victory_masked_swordsman"
+on_defeat_event_id = "battle_defeat_masked_swordsman"

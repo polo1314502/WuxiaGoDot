@@ -124,6 +124,12 @@ func process_choice(choice_index: int):
 	if choice.enemy_data:
 		choice.action_params["enemy_data"] = choice.enemy_data
 	
+	# 新增：傳遞戰鬥後續事件ID
+	if choice.on_victory_event_id != "":
+		choice.action_params["on_victory_event_id"] = choice.on_victory_event_id
+	if choice.on_defeat_event_id != "":
+		choice.action_params["on_defeat_event_id"] = choice.on_defeat_event_id
+	
 	var action = ActionFactory.create_action(main_scene, choice.action_type, choice.action_params)
 	
 	if action and action.can_execute():
