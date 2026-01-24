@@ -94,7 +94,7 @@ func trigger_event(event: EventData):
 		event_history[event.event_id] = []
 	event_history[event.event_id].append({
 		"timestamp": Time.get_ticks_msec(),
-		"day": main_scene.days_passed
+		"turn": main_scene.turns_passed
 	})
 	
 	event_started.emit(event.event_id)

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EventStep" load_steps=4 format=3 uid="uid://br70um84n5xkg"]
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_05axv"]
-[ext_resource type="Resource" uid="uid://dvunjjbc607n0" path="res://events/event_day10/choice_event_day10.tres" id="2_krtlr"]
+[ext_resource type="Resource" uid="uid://dvunjjbc607n0" path="res://events/event_turn10/choice_event_turn10.tres" id="2_krtlr"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_x8ntk"]
 
 [resource]

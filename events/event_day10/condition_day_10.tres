@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_cqrch")
-condition_type = "day_equals"
+condition_type = "turn_equals"
 condition_params = {
-&"day": 10
+&"turn": 10
 }
 metadata/_custom_type_script = "uid://chgvwbk24dcuu"

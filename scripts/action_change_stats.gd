@@ -34,7 +34,7 @@ func execute():
 	player_data.speed += speed
 	player_data.money += money
 	player_data.reputation += reputation
-	player_data.training_points += training_points
+	player_data.training_points = min(player_data.training_points + training_points, 10)
 	
 	var gains = []
 	if attack > 0: gains.append("攻擊 +%d" % attack)
@@ -43,7 +43,7 @@ func execute():
 	if speed > 0: gains.append("速度 +%d" % speed)
 	if money > 0: gains.append("金錢 +%d" % money)
 	if reputation > 0: gains.append("聲望 +%d" % reputation)
-	if training_points > 0: gains.append("修練點數 +%d" % training_points)
+	if training_points > 0: gains.append("體力 +%d" % training_points)
 	
 	if attack < 0: gains.append("攻擊 %d" % attack)
 	if defense < 0: gains.append("防禦 %d" % defense)
@@ -51,6 +51,6 @@ func execute():
 	if speed < 0: gains.append("速度 %d" % speed)
 	if money < 0: gains.append("金錢 %d" % money)
 	if reputation < 0: gains.append("聲望 %d" % reputation)
-	if training_points < 0: gains.append("修練點數 %d" % training_points)
+	if training_points < 0: gains.append("體力 %d" % training_points)
 	
 	result_text = message + "\n" + ", ".join(gains) if message else ", ".join(gains)

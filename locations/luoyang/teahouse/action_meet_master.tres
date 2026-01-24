@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cjk2bbg3to3yl" path="res://scripts/location_action.gd" id="1"]
 [ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_kcthq"]
-[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_day_0.tres" id="2_p4rej"]
+[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_turn_0.tres" id="2_p4rej"]
 
 [resource]
 script = ExtResource("1")

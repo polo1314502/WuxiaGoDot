@@ -50,13 +50,6 @@ func update_location_list(locations: Array[LocationData]):
 		btn.text = location.location_name
 		btn.pressed.connect(func(): enter_location(location))
 		location_list.add_child(btn)
-	
-	# 添加返回按鈕（只在第一天之後顯示）
-	if main_node and main_node.days_passed != 0:
-		var back_btn = Button.new()
-		back_btn.text = "返回養成模式"
-		back_btn.pressed.connect(_on_return_to_training)
-		location_list.add_child(back_btn)
 
 func enter_location(location: LocationData):
 	"""進入地點，顯示子地點列表"""

@@ -2,24 +2,24 @@
 class_name EventCondition
 extends Resource
 
-@export_enum("day_equals", "day_greater", "day_less", "stat_greater", "stat_less", "stat_equals", "completed_event", "has_skill", "random_chance") var condition_type: String = ""
+@export_enum("turn_equals", "turn_greater", "turn_less", "stat_greater", "stat_less", "stat_equals", "completed_event", "has_skill", "random_chance") var condition_type: String = ""
 @export var condition_params: Dictionary = {}
 
 # 輔助函數：檢查條件是否滿足
 func check(main_scene) -> bool:
 	var player_data = main_scene.player_data
-	var days = main_scene.days_passed
+	var turns = main_scene.turns_passed
 	var event_history = main_scene.event_manager.event_history
 	
 	match condition_type:
-		"day_equals":
-			return days == condition_params.get("day", 0)
+		"turn_equals":
+			return turns == condition_params.get("turn", 0)
 		
-		"day_greater":
-			return days >= condition_params.get("day", 0)
+		"turn_greater":
+			return turns >= condition_params.get("turn", 0)
 		
-		"day_less":
-			return days <= condition_params.get("day", 0)
+		"turn_less":
+			return turns <= condition_params.get("turn", 0)
 		
 		"stat_greater":
 			var stat_name = condition_params.get("stat", "attack")

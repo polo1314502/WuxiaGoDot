@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_3or3d"]
 [ext_resource type="Resource" uid="uid://hypf3wliu6up" path="res://events/lakeside/masked_swordsman/choice_victory_accept.tres" id="4_8hydm"]
 [ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="5_qnrbv"]
-[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_day_0.tres" id="6_skv6g"]
+[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_turn_0.tres" id="6_skv6g"]
 
 [sub_resource type="Resource" id="step_1"]
 script = ExtResource("2_3deps")

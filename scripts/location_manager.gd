@@ -18,7 +18,7 @@ var current_sub_location: SubLocation = null
 ## 所有可用地點
 var all_locations: Array[LocationData] = []
 
-## 動作歷史記錄 {action_id: {last_used_day: int, use_count: int}}
+## 動作歷史記錄 {action_id: {last_used_turn: int, use_count: int}}
 var action_history: Dictionary = {}
 
 func _init(main):
@@ -124,7 +124,7 @@ func execute_action(action: LocationAction) -> bool:
 	if not action_history.has(action.action_id):
 		action_history[action.action_id] = {}
 	
-	action_history[action.action_id]["last_used_day"] = main_scene.days_passed
+	action_history[action.action_id]["last_used_turn"] = main_scene.turns_passed
 	action_history[action.action_id]["use_count"] = action_history[action.action_id].get("use_count", 0) + 1
 	
 	# 觸發事件

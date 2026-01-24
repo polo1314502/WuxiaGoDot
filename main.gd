@@ -22,7 +22,10 @@ var player_data = {
 	"training_points": 10
 }
 
-var days_passed = 0
+var turns_passed = 0
+var turn_range = turns_passed % 5 + 1  # 每5天一個週期
+var months_passed = 1  # 當前月份（1-12循環）
+var years_passed = 1  # 當前年份
 
 @onready var mode_label = $UI/ModeLabel
 @onready var training_panel = $UI/TrainingPanel
@@ -87,7 +90,7 @@ func _ready():
 		if not save_data.is_empty():
 			player_data = save_data.player_data
 			event_manager.event_history = save_data.event_history
-			days_passed = save_data.days_passed
+			turns_passed = save_data.turns_passed
 			saved_mode = save_data.get("current_mode", "location")
 	
 	# 根據存檔的模式開始遊戲
@@ -97,13 +100,31 @@ func _ready():
 		show_location_selection()
 	update_stats_display()
 
+func get_turn_range_text() -> String:
+	"""根據 turn_range 返回對應的中文描述"""
+	match turn_range:
+		1:
+			return "初"
+		2:
+			return "上旬"
+		3:
+			return "中旬"
+		4:
+			return "下旬"
+		5:
+			return "底"
+		_:
+			return "未知"
+
 func show_training_mode():
 	current_mode = "training"
 	in_battle = false
 	if player_data.hp == 0:
 		player_data.hp = 1
 	stats_label.visible = true
-	mode_label.text = "養成模式 - 第 %d 天" % days_passed
+	years_passed = int(turns_passed / 60) + 1
+	months_passed = int((turns_passed / 5) % 12) + 1
+	mode_label.text = "養成模式 - %d年%d月%s" % [years_passed, months_passed, get_turn_range_text()]
 	training_panel.visible = true
 	battle_panel.visible = false
 	event_panel.visible = false
@@ -123,26 +144,26 @@ func _on_train_attack_pressed():
 	if player_data.training_points > 0:
 		player_data.attack += 2
 		player_data.training_points -= 1
-		advance_day()
+		advance_turn()
 
 func _on_train_defense_pressed():
 	if player_data.training_points > 0:
 		player_data.defense += 2
 		player_data.training_points -= 1
-		advance_day()
+		advance_turn()
 
 func _on_train_hp_pressed():
 	if player_data.training_points > 0:
 		player_data.max_hp += 10
 		player_data.hp = player_data.max_hp
 		player_data.training_points -= 1
-		advance_day()
+		advance_turn()
 
 func _on_rest_pressed():
 	player_data.hp = player_data.max_hp
 	player_data.mp = player_data.max_mp
-	player_data.training_points += 5
-	advance_day()
+	player_data.training_points = min(player_data.training_points + 5, 10)
+	advance_turn()
 
 func _on_trigger_event_pressed():
 	# 顯示地點選擇面板
@@ -235,16 +256,19 @@ func on_event_sequence_step_completed():
 		event_sequence_index = 0
 
 func _on_save_game_pressed():
-	if save_manager.save_game(player_data, event_manager.event_history, days_passed, current_mode):
+	if save_manager.save_game(player_data, event_manager.event_history, turns_passed, current_mode):
 		mode_label.text = "遊戲已保存！"
 
-func advance_day():
-	days_passed += 1
-	mode_label.text = "養成模式 - 第 %d 天" % days_passed
+func advance_turn():
+	turns_passed += 1
+	turn_range = turns_passed % 5 + 1  # 每5天一個週期
+	years_passed = int(turns_passed / 60) + 1  # 每60天（12個月×5天）為一年
+	months_passed = int((turns_passed / 5) % 12) + 1  # 月份在1-12之間循環
+	mode_label.text = "養成模式 - %d年%d月%s" % [years_passed, months_passed, get_turn_range_text()]
 	update_stats_display()
 	
 	# 自動保存
-	save_manager.save_game(player_data, event_manager.event_history, days_passed, current_mode)
+	save_manager.save_game(player_data, event_manager.event_history, turns_passed, current_mode)
 	
 	# 檢查是否有自動觸發的事件
 	var auto_event = event_manager.check_auto_trigger_events()
@@ -255,7 +279,7 @@ func advance_day():
 
 func _on_auto_event_triggered(event: EventData):
 	"""處理自動觸發的事件"""
-	mode_label.text = "第 %d 天 - %s" % [days_passed, event.title]
+	mode_label.text = "%s" % [event.title]
 
 # === 事件系統 UI ===
 func show_event():
@@ -264,6 +288,7 @@ func show_event():
 		return
 	
 	mode_label.text = "事件：" + event_manager.current_event.title
+	stats_label.visible = false
 	training_panel.visible = false
 	battle_panel.visible = false
 	location_mode.visible = false
@@ -302,14 +327,14 @@ func show_event():
 						EventData.ForceMode.LOCATION:
 							return_to_location_mode()
 						EventData.ForceMode.TRAINING:
-							advance_day()
+							advance_turn()
 							show_training_mode()
 						_:
 							# ForceMode.NONE - 根據觸發來源返回相應模式
 							if event_triggered_from_location:
 								return_to_location_mode()
 							else:
-								advance_day()
+								advance_turn()
 								show_training_mode()
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
@@ -356,7 +381,7 @@ func _on_event_result_ready(result_text: String):
 				# 先檢查force模式（在complete_event之前）
 				var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
 				event_state_machine.complete_event()
-				advance_day()
+				advance_turn()
 				# 根據force_mode決定進入哪個模式
 				match force_mode:
 					EventData.ForceMode.LOCATION:
@@ -378,7 +403,7 @@ func _on_event_result_ready(result_text: String):
 				# 先檢查force模式（在complete_event之前）
 				var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
 				event_state_machine.complete_event()
-				advance_day()
+				advance_turn()
 				# 根據force_mode決定進入哪個模式
 				match force_mode:
 					EventData.ForceMode.LOCATION:
@@ -570,7 +595,7 @@ func check_battle_end():
 				current_battle_defeat_event_id = ""
 				# 結束當前事件並觸發勝利事件
 				event_state_machine.complete_event()
-				advance_day()
+				advance_turn()
 				event_manager.trigger_event(victory_event)
 				show_event()
 				return
@@ -579,14 +604,14 @@ func check_battle_end():
 		if event_manager.current_event and event_manager.has_next_step():
 			# 有後續事件，繼續顯示
 			event_manager.next_step()
-			advance_day()
+			advance_turn()
 			show_event()
 		else:
 			# 沒有後續事件，正常結束
 			# 先檢查force模式（在complete_event之前）
 			var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
 			event_state_machine.complete_event()
-			advance_day()
+			advance_turn()
 			# 根據force_mode決定進入哪個模式
 			match force_mode:
 				EventData.ForceMode.LOCATION:
@@ -615,7 +640,7 @@ func check_battle_end():
 				current_battle_defeat_event_id = ""
 				# 結束當前事件並觸發戰敗事件
 				event_state_machine.complete_event()
-				advance_day()
+				advance_turn()
 				event_manager.trigger_event(defeat_event)
 				show_event()
 				return
@@ -624,7 +649,7 @@ func check_battle_end():
 		# 先檢查force模式（在complete_event之前）
 		var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
 		event_state_machine.complete_event()
-		advance_day()
+		advance_turn()
 		# 根據force_mode決定進入哪個模式
 		match force_mode:
 			EventData.ForceMode.LOCATION:
@@ -653,7 +678,7 @@ func update_stats_display():
 	生命: %d/%d | 內力: %d/%d
 	攻擊: %d | 防禦: %d | 速度: %d
 	銀兩: %d | 聲望: %d
-	修煉點數: %d
+	體力: %d
 	""" % [
 		player_data.name, player_data.level,
 		player_data.exp, player_data.level * 100,
