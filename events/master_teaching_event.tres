@@ -11,4 +11,4 @@ script = ExtResource("1")
 event_id = "master_teaching"
 title = "拜師學藝"
 steps = Array[ExtResource("2_p8maf")]([ExtResource("2"), ExtResource("3")])
-force_training_mode = true
+force_mode = 1
