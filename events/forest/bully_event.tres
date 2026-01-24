@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_pmups"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_rrjne"]
-[ext_resource type="Resource" uid="uid://2r3lvogydswi" path="res://events/bully/bully_event_steps1.tres" id="3_rrjne"]
-[ext_resource type="Resource" uid="uid://b350qsge1xhss" path="res://events/bully/bully_event_steps2.tres" id="4_w44b4"]
+[ext_resource type="Resource" uid="uid://2r3lvogydswi" path="res://events/forest/bully/bully_event_steps1.tres" id="3_rrjne"]
+[ext_resource type="Resource" uid="uid://b350qsge1xhss" path="res://events/forest/bully/bully_event_steps2.tres" id="4_w44b4"]
 [ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="5_a0407"]
 
 [resource]

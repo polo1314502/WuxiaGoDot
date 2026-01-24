@@ -168,10 +168,64 @@ func _scan_directory(path: String):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if file_name.ends_with(".tres"):
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				# 遞迴掃描子資料夾
+				_scan_directory(path + file_name + "/")
+			elif file_name.ends_with(".tres"):
 				var full_path = path + file_name
 				var resource = load(full_path)
 				if resource is EventData:
 					available_events.append(resource)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+
+## 從特定資料夾觸發隨機事件
+func trigger_random_event_from_folder(folder_name: String):
+	var folder_path = "res://events/" + folder_name + "/"
+	var folder_events = []
+	
+	# 從該資料夾載入事件
+	_scan_folder_events(folder_path, folder_events)
+	
+	if folder_events.is_empty():
+		return null
+	
+	# 過濾出可以觸發的事件
+	var valid_events = []
+	for event in folder_events:
+		if can_trigger_event(event):
+			valid_events.append(event)
+	
+	if valid_events.is_empty():
+		return null
+	
+	# 按優先級排序
+	valid_events.sort_custom(func(a, b): return a.priority > b.priority)
+	
+	# 如果有高優先級事件，優先觸發
+	if valid_events.size() > 0 and valid_events[0].priority > 0:
+		trigger_event(valid_events[0])
+		return valid_events[0]
+	
+	# 否則隨機選擇
+	var event = valid_events[randi() % valid_events.size()]
+	trigger_event(event)
+	return event
+
+## 掃描特定資料夾的事件
+func _scan_folder_events(path: String, events_array: Array):
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				# 遞迴掃描子資料夾
+				_scan_folder_events(path + file_name + "/", events_array)
+			elif file_name.ends_with(".tres"):
+				var full_path = path + file_name
+				var resource = load(full_path)
+				if resource is EventData:
+					events_array.append(resource)
 			file_name = dir.get_next()
 		dir.list_dir_end()

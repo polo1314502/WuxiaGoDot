@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_d6a5b"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_is15u"]
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_c8425"]
-[ext_resource type="Resource" uid="uid://c0y1mrtt6ss2u" path="res://events/masked_swordsman/choice_battle.tres" id="4_xhrcv"]
-[ext_resource type="Resource" path="res://events/masked_swordsman/choice_flee.tres" id="5_wk026"]
+[ext_resource type="Resource" uid="uid://c0y1mrtt6ss2u" path="res://events/lakeside/masked_swordsman/choice_battle.tres" id="4_xhrcv"]
+[ext_resource type="Resource" path="res://events/lakeside/masked_swordsman/choice_flee.tres" id="5_wk026"]
 [ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="6_vg7a5"]
 
 [sub_resource type="Resource" id="step_1"]

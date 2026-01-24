@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_tkdau"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_2aw3c"]
-[ext_resource type="Resource" uid="uid://da8rof63p73kk" path="res://events/cave_adventure/choice_cave_adventure_fight_guardian.tres" id="2_kvqer"]
+[ext_resource type="Resource" uid="uid://da8rof63p73kk" path="res://events/forest/cave_adventure/choice_cave_adventure_fight_guardian.tres" id="2_kvqer"]
 
 [resource]
 script = ExtResource("2_2aw3c")

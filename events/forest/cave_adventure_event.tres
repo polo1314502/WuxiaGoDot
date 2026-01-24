@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3 uid="uid://cly3gfpso6p6d"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_vkmhf"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_ctd23"]
+[ext_resource type="Resource" uid="uid://dbpimg1ikib7c" path="res://events/forest/cave_adventure/cave_step1.tres" id="3_v3cd1"]
+[ext_resource type="Resource" uid="uid://m6ea5vdacw6p" path="res://events/forest/cave_adventure/cave_step2.tres" id="4_bobh0"]
+[ext_resource type="Resource" uid="uid://5mnfdrdhr6lf" path="res://events/forest/cave_adventure/cave_step3.tres" id="5_tesk7"]
+[ext_resource type="Resource" uid="uid://lwc8umqoi5b6" path="res://events/forest/cave_adventure/cave_step4.tres" id="6_72j01"]
+[ext_resource type="Resource" uid="uid://c5ece0o4si4tl" path="res://events/forest/cave_adventure/cave_step5.tres" id="7_nh81p"]
+[ext_resource type="Resource" uid="uid://bgqk1623a45va" path="res://events/forest/cave_adventure/cave_step6.tres" id="8_s8g6j"]
+
+[resource]
+script = ExtResource("1_vkmhf")
+event_id = "cave_adventure"
+title = "神秘山洞探險"
+steps = Array[ExtResource("2_ctd23")]([ExtResource("3_v3cd1"), ExtResource("4_bobh0"), ExtResource("5_tesk7"), ExtResource("6_72j01"), ExtResource("7_nh81p"), ExtResource("8_s8g6j")])
+metadata/_custom_type_script = "uid://qx7n1yhiw8ee"

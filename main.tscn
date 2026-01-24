@@ -157,6 +157,70 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="EventLocationPanel" type="Panel" parent="UI"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="UI/EventLocationPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+text = "選擇探索地點"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LocationsContainer" type="VBoxContainer" parent="UI/EventLocationPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -120.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ForestBtn" type="Button" parent="UI/EventLocationPanel/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "森林"
+
+[node name="TownBtn" type="Button" parent="UI/EventLocationPanel/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "城鎮"
+
+[node name="SectBtn" type="Button" parent="UI/EventLocationPanel/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "門派"
+
+[node name="LakesideBtn" type="Button" parent="UI/EventLocationPanel/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "湖畔"
+
+[node name="BackBtn" type="Button" parent="UI/EventLocationPanel/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "返回"
+
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainAttackBtn" to="." method="_on_train_attack_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainDefenseBtn" to="." method="_on_train_defense_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainHPBtn" to="." method="_on_train_hp_pressed"]
@@ -165,3 +229,8 @@ grow_vertical = 2
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/ExploreButton" to="." method="_on_explore_locations_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/SaveGameBtn" to="." method="_on_save_game_pressed"]
+[connection signal="pressed" from="UI/EventLocationPanel/LocationsContainer/ForestBtn" to="." method="_on_event_location_selected" binds= ["forest"]]
+[connection signal="pressed" from="UI/EventLocationPanel/LocationsContainer/TownBtn" to="." method="_on_event_location_selected" binds= ["town"]]
+[connection signal="pressed" from="UI/EventLocationPanel/LocationsContainer/SectBtn" to="." method="_on_event_location_selected" binds= ["sect"]]
+[connection signal="pressed" from="UI/EventLocationPanel/LocationsContainer/LakesideBtn" to="." method="_on_event_location_selected" binds= ["lakeside"]]
+[connection signal="pressed" from="UI/EventLocationPanel/LocationsContainer/BackBtn" to="." method="_on_event_location_back_pressed"]

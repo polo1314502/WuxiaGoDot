@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="EventStep" load_steps=6 format=3 uid="uid://kdnxtde3fqdf"]
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_4qe0y"]
-[ext_resource type="Resource" uid="uid://cmd6qg2jdyhw5" path="res://events/begger/choice_begger_event_give_money.tres" id="2_73tnb"]
-[ext_resource type="Resource" uid="uid://r4crah4g88dw" path="res://events/begger/choice_begger_event_give_more_money.tres" id="3_8nax7"]
+[ext_resource type="Resource" uid="uid://cmd6qg2jdyhw5" path="res://events/town/begger/choice_begger_event_give_money.tres" id="2_73tnb"]
+[ext_resource type="Resource" uid="uid://r4crah4g88dw" path="res://events/town/begger/choice_begger_event_give_more_money.tres" id="3_8nax7"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="3_jdu8v"]
-[ext_resource type="Resource" uid="uid://cep2r4imn1trn" path="res://events/begger/choice_begger_event_ignore.tres" id="4_jdu8v"]
+[ext_resource type="Resource" uid="uid://cep2r4imn1trn" path="res://events/town/begger/choice_begger_event_ignore.tres" id="4_jdu8v"]
 
 [resource]
 script = ExtResource("3_jdu8v")

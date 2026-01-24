@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="EventStep" load_steps=5 format=3 uid="uid://2r3lvogydswi"]
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_55nau"]
-[ext_resource type="Resource" uid="uid://b5htp6w45xmk7" path="res://events/bully/choice_bully_event_fight1.tres" id="2_rx7y3"]
-[ext_resource type="Resource" uid="uid://shvjgldhbwjw" path="res://events/bully/choice_bully_event_watch.tres" id="3_2xf3h"]
+[ext_resource type="Resource" uid="uid://b5htp6w45xmk7" path="res://events/forest/bully/choice_bully_event_fight1.tres" id="2_rx7y3"]
+[ext_resource type="Resource" uid="uid://shvjgldhbwjw" path="res://events/forest/bully/choice_bully_event_watch.tres" id="3_2xf3h"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="4_q5dds"]
 
 [resource]

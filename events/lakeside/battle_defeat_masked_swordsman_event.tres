@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=8 format=3 uid="uid://dd65tc1cjd8tv"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_y6lwa"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_c2uoa"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_k7fev"]
+[ext_resource type="Resource" path="res://events/lakeside/masked_swordsman/choice_defeat_wake.tres" id="4_knlpt"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="5_kcnnm"]
+[ext_resource type="Resource" uid="uid://baa6vg2u8ixw3" path="res://events/condition_only_day_0.tres" id="6_erxsi"]
+
+[sub_resource type="Resource" id="step_1"]
+script = ExtResource("2_c2uoa")
+text = "你被蒙面劍客擊敗了...
+過了許久，你從昏迷中醒來。蒙面劍客早已離去，但你發現他留下了一些銀兩和藥材。
+看來他並非惡人，只是想試探你的實力。你感到有些羞愧，決心要更加努力修煉。"
+choices = Array[ExtResource("3_k7fev")]([ExtResource("4_knlpt")])
+
+[resource]
+script = ExtResource("1_y6lwa")
+event_id = "battle_defeat_masked_swordsman"
+title = "敗北的教訓"
+steps = Array[ExtResource("2_c2uoa")]([SubResource("step_1")])
+trigger_conditions = Array[ExtResource("5_kcnnm")]([ExtResource("6_erxsi")])
+can_repeat = true

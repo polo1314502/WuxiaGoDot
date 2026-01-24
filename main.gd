@@ -28,6 +28,7 @@ var days_passed = 0
 @onready var training_panel = $UI/TrainingPanel
 @onready var battle_panel = $UI/BattlePanel
 @onready var event_panel = $UI/EventPanel
+@onready var event_location_panel = $UI/EventLocationPanel
 @onready var stats_label = $UI/StatsLabel
 @onready var location_mode = $UI/LocationMode
 
@@ -107,6 +108,7 @@ func show_training_mode():
 	battle_panel.visible = false
 	event_panel.visible = false
 	location_mode.visible = false
+	event_location_panel.visible = false
 	update_stats_display()
 
 func return_to_location_mode():
@@ -143,10 +145,33 @@ func _on_rest_pressed():
 	advance_day()
 
 func _on_trigger_event_pressed():
+	# 顯示地點選擇面板
+	show_event_location_selection()
+
+func show_event_location_selection():
+	"""顯示事件地點選擇UI"""
+	mode_label.text = "選擇探索地點"
+	training_panel.visible = false
+	event_location_panel.visible = true
+	event_panel.visible = false
+	battle_panel.visible = false
+	location_mode.visible = false
+	stats_label.visible = false
+
+func _on_event_location_selected(folder_name: String):
+	"""處理地點選擇"""
 	event_triggered_from_location = false  # 從養成模式觸發
-	var event = event_manager.trigger_random_event()
+	var event = event_manager.trigger_random_event_from_folder(folder_name)
 	if event:
 		show_event()
+	else:
+		# 沒有可觸發的事件
+		mode_label.text = "這裡似乎沒有什麼特別的事情..."
+		await get_tree().create_timer(1.5).timeout
+
+func _on_event_location_back_pressed():
+	"""從地點選擇返回養成模式"""
+	show_training_mode()
 
 func _on_explore_locations_pressed():
 	"""新增：打開場景選擇界面"""
@@ -242,6 +267,7 @@ func show_event():
 	training_panel.visible = false
 	battle_panel.visible = false
 	location_mode.visible = false
+	event_location_panel.visible = false
 	event_panel.visible = true
 	
 	$UI/EventPanel/EventText.text = step.text
