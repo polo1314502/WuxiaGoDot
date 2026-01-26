@@ -41,6 +41,9 @@ var battle_turn = "player"
 var battle_log = []
 var current_battle_victory_event_id: String = ""  # 當前戰鬥勝利後事件ID
 var current_battle_defeat_event_id: String = ""   # 當前戰鬥失敗後事件ID
+var player_gauge: float = 0.0  # 玩家速攻值
+var enemy_gauge: float = 0.0   # 敵人速攻值
+var gauge_max: float = 100.0   # 速攻值上限
 
 # 新系統
 var event_manager: EventManager
@@ -487,7 +490,10 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int, ski
 	}
 	
 	battle_log.clear()
-	battle_turn = "player" if player_data.speed >= enemy_data.speed else "enemy"
+	# 初始化速攻值系統
+	player_gauge = 0.0
+	enemy_gauge = 0.0
+	battle_turn = "waiting"  # 初始狀態為等待
 	
 	mode_label.text = "戰鬥模式"
 	training_panel.visible = false
@@ -514,9 +520,9 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int, ski
 	add_battle_log("遭遇 %s！" % enemy_data.name)
 	update_battle_display()
 	
-	if battle_turn == "enemy":
-		await get_tree().create_timer(1.0).timeout
-		enemy_turn()
+	# 啟動速攻值系統
+	await get_tree().create_timer(0.5).timeout
+	battle_tick()
 		
 func _on_skill_used(skill_id: String):
 	if battle_turn != "player" or not in_battle or player_data.hp <= 0 or enemy_data.hp <= 0:
@@ -533,10 +539,14 @@ func _on_skill_used(skill_id: String):
 		add_battle_log(log)
 	
 	if in_battle:
-		battle_turn = "enemy"
-		update_battle_display()
-		await get_tree().create_timer(1.0).timeout
-		enemy_turn()
+		# 玩家行動後，速攻值減100
+		player_gauge -= gauge_max
+		check_battle_end()
+		if in_battle:  # 戰鬥可能已結束，需要再次檢查
+			battle_turn = "waiting"
+			update_battle_display()
+			await get_tree().create_timer(0.5).timeout
+			battle_tick()
 
 func enemy_turn():
 	if not in_battle:
@@ -566,10 +576,40 @@ func enemy_turn():
 			player_data.hp -= damage
 			add_battle_log("%s 攻擊你，造成 %d 傷害" % [enemy_data.name, damage])
 	
+	# 敵人行動後，速攻值減100
+	enemy_gauge -= gauge_max
 	check_battle_end()
-	if in_battle:
+	if in_battle:  # 戰鬥可能已結束，需要再次檢查
+		battle_turn = "waiting"
+		update_battle_display()
+		await get_tree().create_timer(0.5).timeout
+		battle_tick()
+
+func battle_tick():
+	"""速攻值系統核心：持續增加速攻值直到有人可以行動"""
+	if not in_battle:
+		return
+	
+	# 檢查戰鬥是否已結束（預防性檢查）
+	if player_data.hp <= 0 or enemy_data.hp <= 0:
+		return
+	
+	# 增加速攻值
+	while player_gauge < gauge_max and enemy_gauge < gauge_max:
+		player_gauge += player_data.speed
+		enemy_gauge += enemy_data.speed
+	
+	# 判斷誰可以行動（如果同時達到100，玩家優先）
+	if player_gauge >= gauge_max:
 		battle_turn = "player"
 		update_battle_display()
+		# 玩家回合，等待玩家選擇技能
+	elif enemy_gauge >= gauge_max:
+		battle_turn = "enemy"
+		update_battle_display()
+		# 敵人回合，自動執行
+		await get_tree().create_timer(0.8).timeout
+		enemy_turn()
 
 func check_battle_end():
 	if enemy_data.hp <= 0:
@@ -694,12 +734,20 @@ func update_battle_display():
 	if enemy_data.has("mp") and enemy_data.has("max_mp"):
 		enemy_mp_text = " | 內力%d/%d" % [enemy_data.mp, enemy_data.max_mp]
 	
+	var turn_text = "等待中..."
+	if battle_turn == "player":
+		turn_text = "玩家回合！"
+	elif battle_turn == "enemy":
+		turn_text = "敵人回合"
+	
 	var battle_info = """
 	=== 戰鬥中 ===
 	【我方】%s 
 	  HP: %d/%d | 內力%d/%d
+	  速攻值: %.0f/%.0f
 	【敵方】%s 
 	  HP: %d/%d%s
+	  速攻值: %.0f/%.0f
 	
 	當前回合: %s
 	
@@ -709,10 +757,12 @@ func update_battle_display():
 		player_data.name, 
 		player_data.hp, player_data.max_hp,
 		player_data.mp, player_data.max_mp,
+		player_gauge, gauge_max,
 		enemy_data.name, 
 		enemy_data.hp, enemy_data.max_hp,
 		enemy_mp_text,
-		"玩家" if battle_turn == "player" else "敵人",
+		enemy_gauge, gauge_max,
+		turn_text,
 		"\n".join(battle_log.slice(-6))
 	]
 	$UI/BattlePanel/BattleInfo.text = battle_info
