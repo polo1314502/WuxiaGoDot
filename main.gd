@@ -31,7 +31,7 @@ var years_passed = 1  # 當前年份
 @onready var training_panel = $UI/TrainingPanel
 @onready var battle_panel = $UI/BattlePanel
 @onready var event_panel = $UI/EventPanel
-@onready var event_location_panel = $UI/EventLocationPanel
+@onready var event_location_mode = $UI/EventLocationMode
 @onready var stats_label = $UI/StatsLabel
 @onready var location_mode = $UI/LocationMode
 
@@ -86,6 +86,11 @@ func _ready():
 	location_mode.return_to_training_requested.connect(show_training_mode)
 	location_mode.action_executed.connect(_on_location_action_executed)
 	
+	# 初始化 EventLocationMode
+	event_location_mode.initialize(self)
+	event_location_mode.location_selected.connect(_on_event_location_selected)
+	event_location_mode.back_pressed.connect(_on_event_location_back_pressed)
+	
 	# 嘗試讀取存檔
 	var saved_mode = "location"  # 默認場景模式
 	if save_manager.has_save():
@@ -132,7 +137,7 @@ func show_training_mode():
 	battle_panel.visible = false
 	event_panel.visible = false
 	location_mode.visible = false
-	event_location_panel.visible = false
+	event_location_mode.visible = false
 	update_stats_display()
 
 func return_to_location_mode():
@@ -174,13 +179,16 @@ func _on_trigger_event_pressed():
 
 func show_event_location_selection():
 	"""顯示事件地點選擇UI"""
-	mode_label.text = "選擇探索地點"
+	mode_label.text = "選擇地點"
 	training_panel.visible = false
-	event_location_panel.visible = true
+	event_location_mode.visible = true
 	event_panel.visible = false
 	battle_panel.visible = false
 	location_mode.visible = false
 	stats_label.visible = false
+	
+	# 委託給 EventLocationMode 處理
+	event_location_mode.show_location_selection()
 
 func _on_event_location_selected(folder_name: String):
 	"""處理地點選擇"""
@@ -295,7 +303,7 @@ func show_event():
 	training_panel.visible = false
 	battle_panel.visible = false
 	location_mode.visible = false
-	event_location_panel.visible = false
+	event_location_mode.visible = false
 	event_panel.visible = true
 	
 	$UI/EventPanel/EventText.text = step.text

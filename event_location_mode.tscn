@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqk8m2n4pxr2"]
+
+[ext_resource type="Script" path="res://event_location_mode.gd" id="1_event_location_mode"]
+
+[node name="EventLocationMode" type="Panel"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_event_location_mode")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "選擇探索地點"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LocationsContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ForestBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "森林"
+
+[node name="TownBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "城鎮"
+
+[node name="SectBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "門派"
+
+[node name="LakesideBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "湖畔"
+
+[node name="BackBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "返回"
