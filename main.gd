@@ -29,7 +29,7 @@ var years_passed = 1  # 當前年份
 
 @onready var mode_label = $UI/ModeLabel
 @onready var training_panel = $UI/TrainingPanel
-@onready var battle_panel = $UI/BattlePanel
+@onready var battle_mode = $UI/BattleMode
 @onready var event_panel = $UI/EventPanel
 @onready var event_location_mode = $UI/EventLocationMode
 @onready var stats_label = $UI/StatsLabel
@@ -91,6 +91,10 @@ func _ready():
 	event_location_mode.location_selected.connect(_on_event_location_selected)
 	event_location_mode.back_pressed.connect(_on_event_location_back_pressed)
 	
+	# 初始化 BattleMode
+	battle_mode.initialize(self, skill_manager)
+	battle_mode.skill_used.connect(_on_skill_used)
+	
 	# 嘗試讀取存檔
 	var saved_mode = "location"  # 默認場景模式
 	if save_manager.has_save():
@@ -134,7 +138,7 @@ func show_training_mode():
 	months_passed = int((turns_passed / 5) % 12) + 1
 	mode_label.text = "養成模式 - %d年%d月%s" % [years_passed, months_passed, get_turn_range_text()]
 	training_panel.visible = true
-	battle_panel.visible = false
+	battle_mode.visible = false
 	event_panel.visible = false
 	location_mode.visible = false
 	event_location_mode.visible = false
@@ -142,7 +146,7 @@ func show_training_mode():
 
 func return_to_location_mode():
 	event_panel.visible = false
-	battle_panel.visible = false
+	battle_mode.visible = false
 	location_mode.visible = true
 	stats_label.visible = false
 	# 返回當前視圖
@@ -183,7 +187,7 @@ func show_event_location_selection():
 	training_panel.visible = false
 	event_location_mode.visible = true
 	event_panel.visible = false
-	battle_panel.visible = false
+	battle_mode.visible = false
 	location_mode.visible = false
 	stats_label.visible = false
 	
@@ -215,7 +219,7 @@ func show_location_selection():
 	mode_label.text = "選擇地點"
 	stats_label.visible = false
 	training_panel.visible = false
-	battle_panel.visible = false
+	battle_mode.visible = false
 	event_panel.visible = false
 	location_mode.visible = true
 	
@@ -301,7 +305,7 @@ func show_event():
 	mode_label.text = "事件：" + event_manager.current_event.title
 	stats_label.visible = false
 	training_panel.visible = false
-	battle_panel.visible = false
+	battle_mode.visible = false
 	location_mode.visible = false
 	event_location_mode.visible = false
 	event_panel.visible = true
@@ -506,24 +510,10 @@ func start_battle(enemy_name: String, hp: int, atk: int, def: int, spd: int, ski
 	mode_label.text = "戰鬥模式"
 	training_panel.visible = false
 	event_panel.visible = false
-	battle_panel.visible = true
+	battle_mode.visible = true
 	
-	# 清除舊的技能按鈕
-	for child in $UI/BattlePanel/SkillsContainer.get_children():
-		child.queue_free()
-	
-	# 動態生成技能按鈕
-	for skill_id in player_data.skills:
-		var skill = skill_manager.get_skill_by_id(skill_id)
-		if skill:
-			var btn = Button.new()
-			if skill.mp_cost == 0:
-				btn.text = skill.name
-			else:
-				btn.text = "%s (內力:%d)" % [skill.name, skill.mp_cost]
-			btn.custom_minimum_size = Vector2(150, 40)
-			btn.pressed.connect(_on_skill_used.bind(skill_id))
-			$UI/BattlePanel/SkillsContainer.add_child(btn)
+	# 設置戰鬥UI
+	battle_mode.setup_battle(player_data.skills)
 	
 	add_battle_log("遭遇 %s！" % enemy_data.name)
 	update_battle_display()
@@ -773,7 +763,7 @@ func update_battle_display():
 		turn_text,
 		"\n".join(battle_log.slice(-6))
 	]
-	$UI/BattlePanel/BattleInfo.text = battle_info
+	battle_mode.update_battle_info(battle_info)
 
 func add_battle_log(text: String):
 	battle_log.append(text)

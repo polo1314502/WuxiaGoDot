@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://3mbvvji1swv8"]
+[gd_scene load_steps=5 format=3 uid="uid://3mbvvji1swv8"]
 
 [ext_resource type="Script" uid="uid://ydxa807ytia4" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://c8qk7m5n3pxr1" path="res://location_mode.tscn" id="2_location_mode"]
 [ext_resource type="PackedScene" path="res://event_location_mode.tscn" id="3_event_location_mode"]
+[ext_resource type="PackedScene" uid="uid://bqk9m3n5pxr3" path="res://battle_mode.tscn" id="4_battle_mode"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")
@@ -102,32 +103,7 @@ text = "探索場景"
 layout_mode = 2
 text = "存儲遊戲"
 
-[node name="BattlePanel" type="Panel" parent="UI"]
-self_modulate = Color(1, 1, 1, 0)
-visibility_layer = 2
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="BattleInfo" type="Label" parent="UI/BattlePanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="SkillsContainer" type="HBoxContainer" parent="UI/BattlePanel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.8194444
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-metadata/_edit_use_anchors_ = true
+[node name="BattleMode" parent="UI" instance=ExtResource("4_battle_mode")]
 
 [node name="EventPanel" type="Panel" parent="UI"]
 self_modulate = Color(1, 1, 1, 0)
