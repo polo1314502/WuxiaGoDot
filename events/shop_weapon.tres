@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3 uid="uid://d8kj6m7n4p5ru"]
+
+[ext_resource type="Script" path="res://scripts/event_data.gd" id="1_k3mf8"]
+[ext_resource type="Script" path="res://scripts/event_step.gd" id="2_j4nf9"]
+[ext_resource type="Script" path="res://scripts/event_choice.gd" id="3_m5pg1"]
+
+[sub_resource type="Resource" id="EventChoice_1"]
+script = ExtResource("3_m5pg1")
+text = "購買鐵劍（150銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "iron_sword",
+"quantity": 1
+}
+next_step = -1
+conditions = []
+
+[sub_resource type="Resource" id="EventChoice_2"]
+script = ExtResource("3_m5pg1")
+text = "購買精鋼劍（500銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "steel_sword",
+"quantity": 1
+}
+next_step = -1
+conditions = []
+
+[sub_resource type="Resource" id="EventChoice_3"]
+script = ExtResource("3_m5pg1")
+text = "購買皮甲（120銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "leather_armor",
+"quantity": 1
+}
+next_step = -1
+conditions = []
+
+[sub_resource type="Resource" id="EventChoice_4"]
+script = ExtResource("3_m5pg1")
+text = "購買鐵甲（400銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "iron_armor",
+"quantity": 1
+}
+next_step = -1
+conditions = []
+
+[sub_resource type="Resource" id="EventChoice_5"]
+script = ExtResource("3_m5pg1")
+text = "離開"
+action_type = ""
+action_params = {}
+next_step = -1
+conditions = []
+
+[sub_resource type="Resource" id="EventStep_1"]
+script = ExtResource("2_j4nf9")
+step_text = "你來到武器鋪，各種兵器和護甲整齊陳列。"
+choices = Array[Resource("res://scripts/event_choice.gd")]([SubResource("EventChoice_1"), SubResource("EventChoice_2"), SubResource("EventChoice_3"), SubResource("EventChoice_4"), SubResource("EventChoice_5")])
+
+[resource]
+script = ExtResource("1_k3mf8")
+event_id = "shop_weapon"
+event_name = "武器鋪"
+event_type = "shop"
+steps = Array[Resource("res://scripts/event_step.gd")]([SubResource("EventStep_1")])
+conditions = []

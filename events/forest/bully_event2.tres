@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=6 format=3 uid="uid://0yy4ugfpernw"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_pt3b4"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_7bacx"]
+[ext_resource type="Resource" uid="uid://2r3lvogydswi" path="res://events/forest/bully/bully_event_steps1.tres" id="3_2ic4h"]
+[ext_resource type="Resource" uid="uid://b350qsge1xhss" path="res://events/forest/bully/bully_event_steps2.tres" id="4_pju0q"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="5_4x0n5"]
+
+[resource]
+script = ExtResource("1_pt3b4")
+event_id = "bully"
+title = "惡霸欺人"
+steps = Array[ExtResource("2_7bacx")]([ExtResource("3_2ic4h"), ExtResource("4_pju0q")])
+can_repeat = true
+metadata/_custom_type_script = "uid://qx7n1yhiw8ee"

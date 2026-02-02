@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://3mbvvji1swv8"]
+[gd_scene load_steps=6 format=3 uid="uid://3mbvvji1swv8"]
 
 [ext_resource type="Script" uid="uid://ydxa807ytia4" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://c8qk7m5n3pxr1" path="res://location_mode.tscn" id="2_location_mode"]
-[ext_resource type="PackedScene" path="res://event_location_mode.tscn" id="3_event_location_mode"]
-[ext_resource type="PackedScene" uid="uid://bqk9m3n5pxr3" path="res://battle_mode.tscn" id="4_battle_mode"]
+[ext_resource type="PackedScene" uid="uid://dqk8m2n4pxr2" path="res://event_location_mode.tscn" id="3_event_location_mode"]
+[ext_resource type="PackedScene" uid="uid://bqlam3n5pxr3" path="res://battle_mode.tscn" id="4_battle_mode"]
+[ext_resource type="PackedScene" uid="uid://cadh5pkcae4df" path="res://inventory_ui.tscn" id="5_inventory_ui"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")
@@ -65,7 +66,7 @@ offset_top = -47.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 75
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="TrainAttackBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
@@ -103,6 +104,10 @@ text = "探索場景"
 layout_mode = 2
 text = "存儲遊戲"
 
+[node name="InventoryBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
+layout_mode = 2
+text = "物品庫存"
+
 [node name="BattleMode" parent="UI" instance=ExtResource("4_battle_mode")]
 
 [node name="EventPanel" type="Panel" parent="UI"]
@@ -135,11 +140,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="EventLocationMode" parent="UI" instance=ExtResource("3_event_location_mode")]
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+
+[node name="InventoryUI" parent="UI" instance=ExtResource("5_inventory_ui")]
 
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainAttackBtn" to="." method="_on_train_attack_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TrainDefenseBtn" to="." method="_on_train_defense_pressed"]
@@ -149,5 +155,6 @@ anchor_bottom = 0.5
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/ExploreButton" to="." method="_on_explore_locations_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/SaveGameBtn" to="." method="_on_save_game_pressed"]
+[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/InventoryBtn" to="." method="_on_inventory_pressed"]
 [connection signal="back_pressed" from="UI/EventLocationMode" to="." method="_on_event_location_back_pressed"]
 [connection signal="location_selected" from="UI/EventLocationMode" to="." method="_on_event_location_selected"]

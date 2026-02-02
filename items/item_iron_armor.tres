@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://c5vh9n6k2p4qs"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "iron_armor"
+item_name = "鐵甲"
+description = "厚重的鐵製鎧甲，提供良好的防護。"
+item_type = "equipment"
+price = 400
+sell_price = 200
+max_stack = 1
+icon_path = ""
+consumable_effects = {}
+equipment_slot = "armor"
+equipment_stats = {
+"defense": 20,
+"max_hp": 30
+}
+usable = false
+use_in_battle = false

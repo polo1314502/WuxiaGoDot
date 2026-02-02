@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://c3vh8n5k9p2qs"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "iron_sword"
+item_name = "鐵劍"
+description = "普通的鐵製長劍。"
+item_type = "equipment"
+price = 150
+sell_price = 75
+max_stack = 1
+icon_path = ""
+consumable_effects = {}
+equipment_slot = "weapon"
+equipment_stats = {
+"attack": 10
+}
+usable = false
+use_in_battle = false

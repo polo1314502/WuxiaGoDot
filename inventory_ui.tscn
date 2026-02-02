@@ -1,0 +1,123 @@
+[gd_scene load_steps=2 format=3 uid="uid://cadh5pkcae4df"]
+
+[ext_resource type="Script" uid="uid://e5onlafni814" path="res://inventory_ui.gd" id="1_inventory_ui"]
+
+[node name="InventoryUI" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_inventory_ui")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+text = "物品庫存"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="ContentHBox" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftPanel" type="VBoxContainer" parent="Panel/VBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ListTitle" type="Label" parent="Panel/VBox/ContentHBox/LeftPanel"]
+layout_mode = 2
+text = "持有物品："
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBox/ContentHBox/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="Panel/VBox/ContentHBox/LeftPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VSeparator" type="VSeparator" parent="Panel/VBox/ContentHBox"]
+layout_mode = 2
+
+[node name="RightPanel" type="VBoxContainer" parent="Panel/VBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InfoTitle" type="Label" parent="Panel/VBox/ContentHBox/RightPanel"]
+layout_mode = 2
+text = "物品資訊："
+
+[node name="ItemInfo" type="RichTextLabel" parent="Panel/VBox/ContentHBox/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "選擇一個物品查看詳情"
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="EquippedPanel" type="VBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="EquippedTitle" type="Label" parent="Panel/VBox/EquippedPanel"]
+layout_mode = 2
+text = "已裝備："
+
+[node name="EquippedInfo" type="Label" parent="Panel/VBox/EquippedPanel"]
+layout_mode = 2
+text = "武器：無 | 防具：無 | 飾品：無"
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="UseButton" type="Button" parent="Panel/VBox/HBox"]
+layout_mode = 2
+disabled = true
+text = "使用"
+
+[node name="EquipButton" type="Button" parent="Panel/VBox/HBox"]
+layout_mode = 2
+disabled = true
+text = "裝備"
+
+[node name="SellButton" type="Button" parent="Panel/VBox/HBox"]
+layout_mode = 2
+disabled = true
+text = "出售"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+text = "關閉"

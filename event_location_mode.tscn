@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqk8m2n4pxr2"]
 
-[ext_resource type="Script" path="res://event_location_mode.gd" id="1_event_location_mode"]
+[ext_resource type="Script" uid="uid://beposqd5bs12v" path="res://event_location_mode.gd" id="1_event_location_mode"]
 
 [node name="EventLocationMode" type="Panel"]
 visible = false
@@ -52,6 +52,11 @@ text = "門派"
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 text = "湖畔"
+
+[node name="ShopBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "商店"
 
 [node name="BackBtn" type="Button" parent="VBoxContainer/LocationsContainer"]
 custom_minimum_size = Vector2(300, 50)

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://d2kj9m5n6p8qr"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "energy_pill"
+item_name = "回氣丹"
+description = "恢復內力的藥丸。"
+item_type = "consumable"
+price = 80
+sell_price = 40
+max_stack = 99
+icon_path = ""
+consumable_effects = {
+"mp": 30
+}
+equipment_slot = "none"
+equipment_stats = {}
+usable = true
+use_in_battle = true

@@ -34,6 +34,7 @@ var years_passed = 1  # 當前年份
 @onready var event_location_mode = $UI/EventLocationMode
 @onready var stats_label = $UI/StatsLabel
 @onready var location_mode = $UI/LocationMode
+@onready var inventory_ui = $UI/InventoryUI
 
 var in_battle = false
 var enemy_data = {}
@@ -52,6 +53,7 @@ var save_manager: SaveManager
 var skill_manager: SkillManager
 var enemy_manager: EnemyManager  # 新增：敵人管理器
 var location_manager: LocationManager  # 新增：場景管理器
+var inventory_manager: InventoryManager  # 新增：物品管理器
 var current_action_result = null  # 新增：儲存當前動作結果
 var event_sequence: Array[String] = []  # 事件序列
 var event_sequence_index: int = 0  # 當前事件序列索引
@@ -80,6 +82,13 @@ func _ready():
 	location_manager = LocationManager.new(self)  # 新增：初始化場景管理器
 	location_manager.load_locations_from_directory()
 	location_manager.action_executed.connect(_on_location_action_executed)
+	
+	inventory_manager = InventoryManager.new(self)  # 新增：初始化物品管理器
+	inventory_manager.load_items_from_directory()
+	
+	# 測試：添加初始物品（可選，僅用於測試）
+	inventory_manager.add_item("healing_pill", 3)
+	inventory_manager.add_item("energy_pill", 2)
 	
 	# 初始化 LocationMode
 	location_mode.initialize(self, location_manager, player_data)
@@ -273,6 +282,15 @@ func on_event_sequence_step_completed():
 func _on_save_game_pressed():
 	if save_manager.save_game(player_data, event_manager.event_history, turns_passed, current_mode):
 		mode_label.text = "遊戲已保存！"
+
+func _on_inventory_pressed():
+	print("庫存按鈕被按下")
+	print("inventory_ui 存在: ", inventory_ui != null)
+	if inventory_ui:
+		print("正在打開庫存UI")
+		inventory_ui.show_inventory()
+	else:
+		print("錯誤: inventory_ui 為 null")
 
 func advance_turn():
 	turns_passed += 1

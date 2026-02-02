@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://b6vh2k4m1n5pr"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "leather_armor"
+item_name = "皮甲"
+description = "輕便的皮革護甲。"
+item_type = "equipment"
+price = 120
+sell_price = 60
+max_stack = 1
+icon_path = ""
+consumable_effects = {}
+equipment_slot = "armor"
+equipment_stats = {
+"defense": 8
+}
+usable = false
+use_in_battle = false

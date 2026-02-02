@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://d3kj2m8n9p5ru"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "jade_pendant"
+item_name = "玉佩"
+description = "精美的玉石飾品，據說能保平安。"
+item_type = "equipment"
+price = 300
+sell_price = 150
+max_stack = 1
+icon_path = ""
+consumable_effects = {}
+equipment_slot = "accessory"
+equipment_stats = {
+"max_hp": 20,
+"max_mp": 20
+}
+usable = false
+use_in_battle = false

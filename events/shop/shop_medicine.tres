@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=10 format=3 uid="uid://davh7n8k5p6qt"]
+
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_k3mf8"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_j4nf9"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_m5pg1"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="4_av4em"]
+
+[sub_resource type="Resource" id="EventChoice_1"]
+script = ExtResource("3_m5pg1")
+text = "購買療傷丹（50銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "healing_pill",
+"quantity": 1
+}
+
+[sub_resource type="Resource" id="EventChoice_2"]
+script = ExtResource("3_m5pg1")
+text = "購買回氣丹（80銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "energy_pill",
+"quantity": 1
+}
+
+[sub_resource type="Resource" id="EventChoice_3"]
+script = ExtResource("3_m5pg1")
+text = "購買大還丹（200銀兩）"
+action_type = "buy_item"
+action_params = {
+"item_id": "great_healing_pill",
+"quantity": 1
+}
+
+[sub_resource type="Resource" id="EventChoice_4"]
+script = ExtResource("3_m5pg1")
+text = "離開"
+action_params = {}
+
+[sub_resource type="Resource" id="EventStep_1"]
+script = ExtResource("2_j4nf9")
+choices = Array[ExtResource("3_m5pg1")]([SubResource("EventChoice_1"), SubResource("EventChoice_2"), SubResource("EventChoice_3"), SubResource("EventChoice_4")])
+
+[resource]
+script = ExtResource("1_k3mf8")
+event_id = "shop_medicine"
+steps = Array[ExtResource("2_j4nf9")]([SubResource("EventStep_1")])
+can_repeat = true

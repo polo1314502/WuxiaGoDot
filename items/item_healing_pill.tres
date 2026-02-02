@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://c8vh3n4k7p1mn"]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_k3mf8"]
+
+[resource]
+script = ExtResource("1_k3mf8")
+item_id = "healing_pill"
+item_name = "療傷丹"
+description = "常見的療傷藥丸，可恢復少量生命。"
+item_type = "consumable"
+price = 50
+sell_price = 25
+max_stack = 99
+icon_path = ""
+consumable_effects = {
+"hp": 50
+}
+equipment_slot = "none"
+equipment_stats = {}
+usable = true
+use_in_battle = true

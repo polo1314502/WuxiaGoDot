@@ -15,6 +15,7 @@ signal back_pressed()
 @onready var town_btn = $VBoxContainer/LocationsContainer/TownBtn
 @onready var sect_btn = $VBoxContainer/LocationsContainer/SectBtn
 @onready var lakeside_btn = $VBoxContainer/LocationsContainer/LakesideBtn
+@onready var shop_btn = $VBoxContainer/LocationsContainer/ShopBtn
 @onready var back_btn = $VBoxContainer/LocationsContainer/BackBtn
 
 # 外部依賴（由Main傳入）
@@ -26,6 +27,7 @@ func _ready():
 	town_btn.pressed.connect(func(): _on_location_selected("town"))
 	sect_btn.pressed.connect(func(): _on_location_selected("sect"))
 	lakeside_btn.pressed.connect(func(): _on_location_selected("lakeside"))
+	shop_btn.pressed.connect(func(): _on_location_selected("shop"))
 	back_btn.pressed.connect(_on_back_pressed)
 
 func initialize(main_ref: Node):
