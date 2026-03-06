@@ -142,6 +142,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="EventLocationMode" parent="UI" instance=ExtResource("3_event_location_mode")]
+visible = false
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
