@@ -14,7 +14,7 @@ func _init(main, params: Dictionary = {}):
 	player_data = main.player_data
 	setup(params)
 
-func setup(params: Dictionary):
+func setup(_params: Dictionary):
 	pass  # 子類覆寫以設置參數
 
 func can_execute() -> bool:

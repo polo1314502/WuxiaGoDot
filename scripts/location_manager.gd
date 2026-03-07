@@ -29,7 +29,7 @@ func _init(main):
 func load_locations_from_directory(path: String = "res://locations/"):
 	all_locations.clear()
 	_scan_directory(path)
-	print("已載入 %d 個地點" % all_locations.size())
+	# print("已載入 %d 個地點" % all_locations.size())
 
 func _scan_directory(path: String):
 	var dir = DirAccess.open(path)
@@ -47,7 +47,7 @@ func _scan_directory(path: String):
 				var resource = load(file_path)
 				if resource is LocationData:
 					all_locations.append(resource)
-					print("已載入地點：", resource.location_name)
+					# print("已載入地點：", resource.location_name)
 			
 			file_name = dir.get_next()
 		
@@ -72,7 +72,7 @@ func enter_location(location: LocationData):
 	current_location = location
 	current_sub_location = null
 	location_changed.emit(location)
-	print("進入地點：", location.location_name)
+	# print("進入地點：", location.location_name)
 
 ## 獲取當前地點的可用子地點
 func get_available_sub_locations() -> Array[SubLocation]:
@@ -95,7 +95,7 @@ func is_sub_location_available(sub_location: SubLocation) -> bool:
 func enter_sub_location(sub_location: SubLocation):
 	current_sub_location = sub_location
 	sub_location_entered.emit(sub_location)
-	print("進入子地點：", sub_location.sub_location_name)
+	# print("進入子地點：", sub_location.sub_location_name)
 
 ## 獲取當前子地點的可用動作
 func get_available_actions() -> Array[LocationAction]:

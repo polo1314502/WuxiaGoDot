@@ -18,16 +18,16 @@ func can_execute() -> bool:
 	return enemy_data.hp > 0
 
 func execute():
-	var total_heal = heal_amount
+	var calculated_heal = heal_amount
 	
 	# 百分比治療
 	if heal_percent > 0:
-		total_heal += int(enemy_data.max_hp * heal_percent / 100.0)
+		calculated_heal += int(enemy_data.max_hp * heal_percent / 100.0)
 	
 	# 實際治療
-	if total_heal > 0:
+	if calculated_heal > 0:
 		var before_hp = enemy_data.hp
-		enemy_data.hp = min(enemy_data.max_hp, enemy_data.hp + total_heal)
+		enemy_data.hp = min(enemy_data.max_hp, enemy_data.hp + calculated_heal)
 		var actual_heal = enemy_data.hp - before_hp
 		
 		result_logs.append("回復了 %d 生命" % actual_heal)

@@ -97,8 +97,6 @@ func _ready():
 	
 	# 初始化 EventLocationMode
 	event_location_mode.initialize(self)
-	event_location_mode.location_selected.connect(_on_event_location_selected)
-	event_location_mode.back_pressed.connect(_on_event_location_back_pressed)
 	
 	# 初始化 BattleMode
 	battle_mode.initialize(self, skill_manager)
@@ -235,9 +233,10 @@ func show_location_selection():
 	# 委託給 LocationMode 處理
 	location_mode.show_location_selection()
 
-func _on_location_action_executed(action: LocationAction):
+func _on_location_action_executed(_action: LocationAction):
 	"""處理動作執行後的回調"""
-	print("執行動作：", action.action_name)
+	# print("執行動作：", action.action_name)
+	pass
 
 func start_event_sequence(event_ids: Array[String]):
 	"""開始事件序列"""
@@ -454,7 +453,7 @@ func _on_event_result_ready(result_text: String):
 	
 	update_stats_display()
 
-func _on_event_state_changed(new_state: int):
+func _on_event_state_changed(_new_state: int):
 	pass  # 可用於 Debug 或顯示狀態
 
 func _on_battle_triggered(battle_params: Dictionary):
@@ -551,8 +550,8 @@ func _on_skill_used(skill_id: String):
 		return
 	
 	# 輸出所有戰鬥日誌
-	for log in executor.get_logs():
-		add_battle_log(log)
+	for log_content in executor.get_logs():
+		add_battle_log(log_content)
 	
 	if in_battle:
 		# 玩家行動後，速攻值減100
@@ -582,8 +581,8 @@ func enemy_turn():
 				var executor = SkillExecutor.new(self, skill, true)
 				if executor.can_execute():
 					executor.execute()
-					for log in executor.get_logs():
-						add_battle_log(log)
+					for log_content in executor.get_logs():
+						add_battle_log(log_content)
 					used_skill = true
 		
 		# 如果沒有技能或無法使用技能，使用普通攻擊

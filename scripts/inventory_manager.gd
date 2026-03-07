@@ -35,11 +35,11 @@ func load_items_from_directory(path: String = "res://items/"):
 			var item = load(item_path) as ItemData
 			if item and item.item_id != "":
 				items[item.item_id] = item
-				print("已載入物品：", item.item_name, " (", item.item_id, ")")
+				# print("已載入物品：", item.item_name, " (", item.item_id, ")")
 		file_name = dir.get_next()
 	
 	dir.list_dir_end()
-	print("共載入 %d 個物品" % items.size())
+	# print("共載入 %d 個物品" % items.size())
 
 # 根據ID獲取物品數據
 func get_item(item_id: String) -> ItemData:

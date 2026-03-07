@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8qk7m5n3pxr1"]
 
-[ext_resource type="Script" path="res://location_mode.gd" id="1_location_mode"]
+[ext_resource type="Script" uid="uid://blfyvs2374ted" path="res://location_mode.gd" id="1_location_mode"]
 
 [node name="LocationMode" type="Panel"]
 self_modulate = Color(1, 1, 1, 0)

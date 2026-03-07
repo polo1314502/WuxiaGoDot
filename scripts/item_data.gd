@@ -7,7 +7,7 @@ extends Resource
 @export var description: String = ""  # 物品描述
 @export_enum("consumable", "equipment", "quest", "material") var item_type: String = "consumable"  # 物品類型
 @export var price: int = 0  # 購買價格
-@export var sell_price: int = 0  # 出售價格
+@export var sell_price: float = 0  # 出售價格
 @export var max_stack: int = 99  # 最大堆疊數量
 @export var icon_path: String = ""  # 圖標路徑
 
@@ -30,7 +30,7 @@ func _init(id: String = "", name: String = ""):
 	item_id = id
 	item_name = name
 	if sell_price == 0 and price > 0:
-		sell_price = price / 2  # 默認出售價格為購買價格的一半
+		sell_price = price / 2.0  # 默認出售價格為購買價格的一半
 
 func get_display_name() -> String:
 	return item_name if item_name != "" else item_id

@@ -98,10 +98,6 @@ text = "戰鬥訓練"
 layout_mode = 2
 text = "觸發事件"
 
-[node name="ExploreButton" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
-layout_mode = 2
-text = "探索場景"
-
 [node name="SaveGameBtn" type="Button" parent="UI/TrainingPanel/HBoxContainer"]
 layout_mode = 2
 text = "存儲遊戲"
@@ -154,7 +150,6 @@ size_flags_vertical = 4
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/RestBtn" to="." method="_on_rest_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/StartBattleBtn" to="." method="_on_start_battle_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/TriggerEventBtn" to="." method="_on_trigger_event_pressed"]
-[connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/ExploreButton" to="." method="_on_explore_locations_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/SaveGameBtn" to="." method="_on_save_game_pressed"]
 [connection signal="pressed" from="UI/TrainingPanel/HBoxContainer/InventoryBtn" to="." method="_on_inventory_pressed"]
 [connection signal="back_pressed" from="UI/EventLocationMode" to="." method="_on_event_location_back_pressed"]

@@ -55,8 +55,8 @@ func execute():
 		action.execute()
 		damage_total += action.total_damage
 		
-		for log in action.get_logs():
-			all_logs.append("  " + log)
+		for log_content in action.get_logs():
+			all_logs.append("  " + log_content)
 	
 	# 處理吸血（需要在傷害計算後）
 	_process_lifesteal()

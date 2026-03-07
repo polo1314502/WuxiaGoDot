@@ -6,7 +6,6 @@ extends Panel
 
 # 信號定義
 signal skill_used(skill_id: String)
-signal battle_ended()
 
 # UI 節點引用
 @onready var battle_info = $VBoxContainer/BattleInfo
