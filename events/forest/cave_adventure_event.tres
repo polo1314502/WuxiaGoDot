@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3 uid="uid://cly3gfpso6p6d"]
+[gd_resource type="Resource" script_class="EventData" load_steps=10 format=3 uid="uid://cly3gfpso6p6d"]
 
 [ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_vkmhf"]
 [ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_ctd23"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://lwc8umqoi5b6" path="res://events/forest/cave_adventure/cave_step4.tres" id="6_72j01"]
 [ext_resource type="Resource" uid="uid://c5ece0o4si4tl" path="res://events/forest/cave_adventure/cave_step5.tres" id="7_nh81p"]
 [ext_resource type="Resource" uid="uid://bgqk1623a45va" path="res://events/forest/cave_adventure/cave_step6.tres" id="8_s8g6j"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="9_051ei"]
 
 [resource]
 script = ExtResource("1_vkmhf")

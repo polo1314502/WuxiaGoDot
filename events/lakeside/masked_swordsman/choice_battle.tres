@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="EventChoice" load_steps=3 format=3 uid="uid://c0y1mrtt6ss2u"]
+[gd_resource type="Resource" script_class="EventChoice" load_steps=4 format=3 uid="uid://c0y1mrtt6ss2u"]
 
 [ext_resource type="Resource" path="res://enemies/enemy_warrior.tres" id="1_24eac"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_v14v2"]
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="2_3teov"]
 
 [resource]

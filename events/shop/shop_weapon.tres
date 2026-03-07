@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=9 format=3 uid="uid://d8kj6m7n4p5ru"]
+[gd_resource type="Resource" script_class="EventData" load_steps=11 format=3 uid="uid://d5ollbfkja03"]
 
-[ext_resource type="Script" path="res://scripts/event_data.gd" id="1_k3mf8"]
-[ext_resource type="Script" path="res://scripts/event_step.gd" id="2_j4nf9"]
-[ext_resource type="Script" path="res://scripts/event_choice.gd" id="3_m5pg1"]
+[ext_resource type="Script" uid="uid://qx7n1yhiw8ee" path="res://scripts/event_data.gd" id="1_k3mf8"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_j4nf9"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="3_m5pg1"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="4_r4emf"]
 
 [sub_resource type="Resource" id="EventChoice_1"]
 script = ExtResource("3_m5pg1")
@@ -12,8 +13,6 @@ action_params = {
 "item_id": "iron_sword",
 "quantity": 1
 }
-next_step = -1
-conditions = []
 
 [sub_resource type="Resource" id="EventChoice_2"]
 script = ExtResource("3_m5pg1")
@@ -23,8 +22,6 @@ action_params = {
 "item_id": "steel_sword",
 "quantity": 1
 }
-next_step = -1
-conditions = []
 
 [sub_resource type="Resource" id="EventChoice_3"]
 script = ExtResource("3_m5pg1")
@@ -34,8 +31,6 @@ action_params = {
 "item_id": "leather_armor",
 "quantity": 1
 }
-next_step = -1
-conditions = []
 
 [sub_resource type="Resource" id="EventChoice_4"]
 script = ExtResource("3_m5pg1")
@@ -45,26 +40,17 @@ action_params = {
 "item_id": "iron_armor",
 "quantity": 1
 }
-next_step = -1
-conditions = []
 
 [sub_resource type="Resource" id="EventChoice_5"]
 script = ExtResource("3_m5pg1")
 text = "離開"
-action_type = ""
 action_params = {}
-next_step = -1
-conditions = []
 
 [sub_resource type="Resource" id="EventStep_1"]
 script = ExtResource("2_j4nf9")
-step_text = "你來到武器鋪，各種兵器和護甲整齊陳列。"
-choices = Array[Resource("res://scripts/event_choice.gd")]([SubResource("EventChoice_1"), SubResource("EventChoice_2"), SubResource("EventChoice_3"), SubResource("EventChoice_4"), SubResource("EventChoice_5")])
+choices = Array[ExtResource("3_m5pg1")]([SubResource("EventChoice_1"), SubResource("EventChoice_2"), SubResource("EventChoice_3"), SubResource("EventChoice_4"), SubResource("EventChoice_5")])
 
 [resource]
 script = ExtResource("1_k3mf8")
 event_id = "shop_weapon"
-event_name = "武器鋪"
-event_type = "shop"
-steps = Array[Resource("res://scripts/event_step.gd")]([SubResource("EventStep_1")])
-conditions = []
+steps = Array[ExtResource("2_j4nf9")]([SubResource("EventStep_1")])

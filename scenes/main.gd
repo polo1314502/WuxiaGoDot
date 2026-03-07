@@ -371,9 +371,13 @@ func show_event():
 		)
 		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
 	else:
-		# 有選項 - 創建選項按鈕
+		# 有選項 - 創建選項按鈕（只顯示滿足條件的選項）
 		for i in range(step.choices.size()):
 			var choice = step.choices[i]
+			# 檢查選項是否滿足顯示條件
+			if not choice.should_display(self):
+				continue
+			
 			var btn = Button.new()
 			btn.text = choice.text
 			btn.custom_minimum_size = Vector2(300, 40)

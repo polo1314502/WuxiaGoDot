@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="EventChoice" load_steps=2 format=3 uid="uid://hypf3wliu6up"]
+[gd_resource type="Resource" script_class="EventChoice" load_steps=3 format=3 uid="uid://hypf3wliu6up"]
 
 [ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_i3sh7"]
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_jnjy2"]
 
 [resource]
 script = ExtResource("1_i3sh7")
