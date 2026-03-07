@@ -2,7 +2,7 @@
 class_name SaveManager
 extends Node
 
-const SAVE_PATH = "res://savegame.tres"
+const SAVE_PATH = "res://savegame.sav"
 
 func save_game(player_data: Dictionary, event_history: Dictionary, turns_passed: int, current_mode: String = "training") -> bool:
 	var save_data = {

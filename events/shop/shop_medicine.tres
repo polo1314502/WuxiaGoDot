@@ -35,6 +35,7 @@ action_params = {
 [sub_resource type="Resource" id="EventChoice_4"]
 script = ExtResource("3_m5pg1")
 text = "離開"
+action_type = "change_stats"
 action_params = {}
 
 [sub_resource type="Resource" id="EventStep_1"]
