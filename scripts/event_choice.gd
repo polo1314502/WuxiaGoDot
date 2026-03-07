@@ -3,7 +3,7 @@ class_name EventChoice
 extends Resource
 
 @export var text: String = ""
-@export_enum("change_stats", "trigger_battle", "buy_item", "learn_skill") var action_type: String = ""
+@export_enum("change_stats", "trigger_battle", "buy_item", "learn_skill", "custom_message") var action_type: String = ""
 @export var action_params: Dictionary = {
 	"attack": 0,
 	"defense": 0,
@@ -25,6 +25,10 @@ extends Resource
 
 # 顯示條件（新增）
 @export var display_conditions: Array[EventCondition] = []  # 顯示此選項需要滿足的條件
+
+# 分支跳轉（新增）
+@export var next_step_index: int = -1  # 下一步的索引（-1 表示自動順序，-2 表示直接結束事件）
+@export var next_event_id: String = ""  # 跳轉到另一個事件（優先級高於 next_step_index）
 
 # 檢查此選項是否應該顯示
 func should_display(main_scene) -> bool:

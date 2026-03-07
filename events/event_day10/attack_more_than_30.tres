@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EventCondition" load_steps=2 format=3 uid="uid://cqgra8xwlfb6k"]
+
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_1sv3o"]
+
+[resource]
+script = ExtResource("1_1sv3o")
+condition_type = "stat_greater"
+condition_params = {
+&"stat": "attack",
+&"value": 30
+}
+metadata/_custom_type_script = "uid://chgvwbk24dcuu"

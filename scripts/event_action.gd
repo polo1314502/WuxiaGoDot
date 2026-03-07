@@ -8,6 +8,9 @@ var result_text: String = ""
 var triggers_battle: bool = false
 var battle_params: Dictionary = {}
 var choice_data = null  # 新增：存儲對應的 choice 對象
+var next_step_index: int = -1  # 下一步索引（-1 表示自動順序）
+var next_event_id: String = ""  # 下一個事件ID
+var end_event: bool = false  # 是否結束事件
 
 func _init(main, params: Dictionary = {}):
 	main_scene = main

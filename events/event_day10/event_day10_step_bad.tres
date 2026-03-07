@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventStep" load_steps=3 format=3 uid="uid://c6mhw1fqj5uup"]
+
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="1_4o60f"]
+[ext_resource type="Script" uid="uid://bpljx2f02lypp" path="res://scripts/event_step.gd" id="2_88ocf"]
+
+[resource]
+script = ExtResource("2_88ocf")
+text = "師父發現你疏於修練，十分失望"
+metadata/_custom_type_script = "uid://bpljx2f02lypp"

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="EventChoice" load_steps=4 format=3 uid="uid://bv2lscl1u8ig"]
+
+[ext_resource type="Script" uid="uid://chgvwbk24dcuu" path="res://scripts/event_condition.gd" id="1_0dxp2"]
+[ext_resource type="Resource" uid="uid://cxbfk06qxwksq" path="res://events/event_day10/attack_equal_or_less_than_30.tres" id="2_3kj8f"]
+[ext_resource type="Script" uid="uid://dkt0xii001h0n" path="res://scripts/event_choice.gd" id="2_njq7a"]
+
+[resource]
+script = ExtResource("2_njq7a")
+text = "接受師父指點"
+action_type = "change_stats"
+action_params = {
+"attack": 5,
+"defense": 5,
+"enemy_attack": 0,
+"enemy_defense": 0,
+"enemy_hp": 0,
+"enemy_name": "",
+"enemy_speed": 0,
+"max_hp": 5,
+"message": "",
+"money": 0,
+"reputation": 0,
+"speed": 5,
+"training_points": 0
+}
+end_event = true
+display_conditions = Array[ExtResource("1_0dxp2")]([ExtResource("2_3kj8f")])
+next_step_index = 2
+metadata/_custom_type_script = "uid://dkt0xii001h0n"

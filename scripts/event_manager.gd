@@ -113,6 +113,13 @@ func next_step():
 	if has_next_step():
 		current_step_index += 1
 
+# 跳轉到指定步驟
+func jump_to_step(step_index: int):
+	if current_event and step_index >= 0 and step_index < current_event.steps.size():
+		current_step_index = step_index
+		return true
+	return false
+
 func process_choice(choice_index: int):
 	var step = get_current_step()
 	if not step or choice_index >= step.choices.size():
@@ -141,6 +148,18 @@ func process_choice(choice_index: int):
 		
 		# 將 choice 對象也返回，讓主場景知道是否要繼續事件
 		action.choice_data = choice
+		
+		# 處理分支跳轉
+		if choice.next_event_id != "":
+			# 跳轉到另一個事件
+			action.next_event_id = choice.next_event_id
+		elif choice.next_step_index >= 0:
+			# 跳轉到指定步驟
+			action.next_step_index = choice.next_step_index
+		elif choice.next_step_index == -2:
+			# 直接結束事件
+			action.end_event = true
+		
 		return action
 	else:
 		# 無法執行（如銀兩不足）

@@ -340,8 +340,32 @@ func show_event():
 		continue_btn.text = "繼續"
 		continue_btn.custom_minimum_size = Vector2(200, 40)
 		continue_btn.pressed.connect(func():
+			# 檢查當前步驟是否要求直接結束事件
+			if step.end_event:
+				# 直接結束事件
+				var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
+				event_state_machine.complete_event()
+				
+				# 檢查是否在事件序列中
+				if not event_sequence.is_empty():
+					on_event_sequence_step_completed()
+				else:
+					# 根據force_mode決定進入哪個模式
+					match force_mode:
+						EventData.ForceMode.LOCATION:
+							return_to_location_mode()
+						EventData.ForceMode.TRAINING:
+							advance_turn()
+							show_training_mode()
+						_:
+							# ForceMode.NONE - 根據觸發來源返回相應模式
+							if event_triggered_from_location:
+								return_to_location_mode()
+							else:
+								advance_turn()
+								show_training_mode()
 			# 檢查是否還有下一步
-			if event_manager.has_next_step():
+			elif event_manager.has_next_step():
 				event_manager.next_step()
 				show_event()
 			else:
@@ -407,12 +431,55 @@ func _on_event_result_ready(result_text: String):
 		continue_btn.pressed.connect(func():
 			# 檢查這個選擇是否要求立即結束事件
 			var should_end = false
+			var has_next_event = false
+			var next_event_target = ""
+			var has_step_jump = false
+			var step_jump_index = -1
+			
 			if current_action_result and current_action_result.choice_data:
 				should_end = current_action_result.choice_data.end_event
 			
+			# 檢查是否有分支跳轉
+			if current_action_result:
+				if current_action_result.end_event:
+					should_end = true
+				if current_action_result.next_event_id != "":
+					has_next_event = true
+					next_event_target = current_action_result.next_event_id
+				elif current_action_result.next_step_index >= 0:
+					has_step_jump = true
+					step_jump_index = current_action_result.next_step_index
+			
 			current_action_result = null  # 清除暫存
 			
-			if should_end:
+			if has_next_event:
+				# 跳轉到另一個事件
+				var next_event = event_manager.get_event_by_id(next_event_target)
+				if next_event:
+					event_state_machine.complete_event()
+					event_state_machine.start_event(next_event)
+					show_event()
+				else:
+					push_warning("找不到事件: " + next_event_target)
+					event_state_machine.complete_event()
+					advance_turn()
+					if event_triggered_from_location:
+						return_to_location_mode()
+					else:
+						show_training_mode()
+			elif has_step_jump:
+				# 跳轉到指定步驟
+				if event_manager.jump_to_step(step_jump_index):
+					show_event()
+				else:
+					push_warning("無效的步驟索引: " + str(step_jump_index))
+					event_state_machine.complete_event()
+					advance_turn()
+					if event_triggered_from_location:
+						return_to_location_mode()
+					else:
+						show_training_mode()
+			elif should_end:
 				# 立即結束事件
 				# 先檢查force模式（在complete_event之前）
 				var force_mode = event_manager.current_event.force_mode if event_manager.current_event else EventData.ForceMode.NONE
