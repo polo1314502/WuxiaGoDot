@@ -31,6 +31,7 @@ var years_passed = 1  # 當前年份
 @onready var training_panel = $UI/TrainingPanel
 @onready var battle_mode = $UI/BattleMode
 @onready var event_panel = $UI/EventPanel
+@onready var speaker_label = $UI/EventPanel/VBoxContainer/SpeakerLabel
 @onready var event_location_mode = $UI/EventLocationMode
 @onready var stats_label = $UI/StatsLabel
 @onready var location_mode = $UI/LocationMode
@@ -327,10 +328,22 @@ func show_event():
 	event_location_mode.visible = false
 	event_panel.visible = true
 	
-	$UI/EventPanel/EventText.text = step.text
+	# 顯示說話者（如果有）
+	if step.speaker != "":
+		speaker_label.text = step.speaker
+		speaker_label.visible = true
+		# 根據 speaker_position 設置對齊方式
+		if step.speaker_position == EventStep.SpeakerPosition.RIGHT:
+			speaker_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		else:
+			speaker_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	else:
+		speaker_label.visible = false
+	
+	$UI/EventPanel/VBoxContainer/EventText.text = step.text
 	
 	# 清除舊按鈕
-	for child in $UI/EventPanel/ChoicesContainer.get_children():
+	for child in $UI/EventPanel/VBoxContainer/ChoicesContainer.get_children():
 		child.queue_free()
 	
 	# 檢查是否有選項
@@ -393,7 +406,7 @@ func show_event():
 								advance_turn()
 								show_training_mode()
 		)
-		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
+		$UI/EventPanel/VBoxContainer/ChoicesContainer.add_child(continue_btn)
 	else:
 		# 有選項 - 創建選項按鈕（只顯示滿足條件的選項）
 		for i in range(step.choices.size()):
@@ -406,21 +419,22 @@ func show_event():
 			btn.text = choice.text
 			btn.custom_minimum_size = Vector2(300, 40)
 			btn.pressed.connect(_on_event_choice_pressed.bind(i))
-			$UI/EventPanel/ChoicesContainer.add_child(btn)
+			$UI/EventPanel/VBoxContainer/ChoicesContainer.add_child(btn)
 	
 	event_state_machine.show_current_step()
 
 func _on_event_choice_pressed(choice_index: int):
+	speaker_label.visible = false  # 隱藏說話者標籤
 	event_state_machine.handle_choice(choice_index)
 	
 func _handle_action_result(action):
 	current_action_result = action
 
 func _on_event_result_ready(result_text: String):
-	$UI/EventPanel/EventText.text = result_text
+	$UI/EventPanel/VBoxContainer/EventText.text = result_text
 	
 	# 清除選項
-	for child in $UI/EventPanel/ChoicesContainer.get_children():
+	for child in $UI/EventPanel/VBoxContainer/ChoicesContainer.get_children():
 		child.queue_free()
 	
 	# 添加繼續按鈕
@@ -520,7 +534,7 @@ func _on_event_result_ready(result_text: String):
 						else:
 							show_training_mode()
 		)
-		$UI/EventPanel/ChoicesContainer.add_child(continue_btn)
+		$UI/EventPanel/VBoxContainer/ChoicesContainer.add_child(continue_btn)
 	
 	update_stats_display()
 
