@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqk8m2n4pxr2"]
 
-[ext_resource type="Script" uid="uid://beposqd5bs12v" path="res://event_location_mode.gd" id="1_event_location_mode"]
+[ext_resource type="Script" uid="uid://beposqd5bs12v" path="res://scenes/event_location_mode.gd" id="1_event_location_mode"]
 
 [node name="EventLocationMode" type="Panel"]
 self_modulate = Color(1, 1, 1, 0)

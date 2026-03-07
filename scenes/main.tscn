@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://3mbvvji1swv8"]
 
-[ext_resource type="Script" uid="uid://ydxa807ytia4" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://c8qk7m5n3pxr1" path="res://location_mode.tscn" id="2_location_mode"]
-[ext_resource type="PackedScene" uid="uid://dqk8m2n4pxr2" path="res://event_location_mode.tscn" id="3_event_location_mode"]
-[ext_resource type="PackedScene" uid="uid://bqlam3n5pxr3" path="res://battle_mode.tscn" id="4_battle_mode"]
-[ext_resource type="PackedScene" uid="uid://cadh5pkcae4df" path="res://inventory_ui.tscn" id="5_inventory_ui"]
+[ext_resource type="Script" uid="uid://ydxa807ytia4" path="res://scenes/main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://c8qk7m5n3pxr1" path="res://scenes/location_mode.tscn" id="2_location_mode"]
+[ext_resource type="PackedScene" uid="uid://dqk8m2n4pxr2" path="res://scenes/event_location_mode.tscn" id="3_event_location_mode"]
+[ext_resource type="PackedScene" uid="uid://bqlam3n5pxr3" path="res://scenes/battle_mode.tscn" id="4_battle_mode"]
+[ext_resource type="PackedScene" uid="uid://cadh5pkcae4df" path="res://scenes/inventory_ui.tscn" id="5_inventory_ui"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")

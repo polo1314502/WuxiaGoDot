@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqlam3n5pxr3"]
 
-[ext_resource type="Script" path="res://battle_mode.gd" id="1_battle_mode"]
+[ext_resource type="Script" uid="uid://c5rfggq3ooyso" path="res://scenes/battle_mode.gd" id="1_battle_mode"]
+
 
 [node name="BattleMode" type="Panel"]
 visible = false
